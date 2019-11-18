@@ -16,6 +16,20 @@ AluminatiVision supports tuning via the util application (needs Java 13).  This 
 # Dependencies
 AluminatiVision only has one dependency OpenCV 4.  Scripts are included for installing the dependencies for OpenCV and for building OpenCV.  If you don't want to setup extra swap space and spend 2 hours compiling, you can use the prebuild OpenCV Java wrapper in the repository.  Please note that the compile options for OpenCV are optimized for the Raspberry Pi and should not be changed.
 
+# Filesystem corruption
+Since the vision system will be turned off just by cutting the power, it is important the the filesystem does not become corrupt.  The best way to do this is to make the filesystem read-only, but there needs to be a way to switch back and forth between read-only mode and read-write mode so that new programs can be deployed.  The scripts folder contains a script for the initial setup of a read-only filesystem.
+
+To set the filesystem to rw again, run this:
+...
+ sudo mount -o remount,rw /
+...
+This sets the root partition to rw.
+
+To set the filesystem to ro run this command:
+...
+ sudo mount -o remount,ro /
+...
+
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
 
