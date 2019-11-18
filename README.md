@@ -39,6 +39,9 @@ The root of this project should be copied to /home/pi on a Raspberry Pi.  The ex
 # Note about the JVM
 This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
 
+# Note about Windows
+AluminatiVision uses the V4L2 linux driver to control the cameras, so a different driver would be needed for the software to run smoothly on windows (in addition to some path adjustments).
+
 # TODO
  - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
 
