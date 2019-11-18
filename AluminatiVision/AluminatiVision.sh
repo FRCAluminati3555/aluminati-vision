@@ -1,3 +1,3 @@
 #!/bin/sh
 
-LD_LIBRARY_PATH=/home/pi/AluminatiVision/jni ./jre/bin/java -jar AluminatiVision.jar
+LD_LIBRARY_PATH=/home/pi/AluminatiVision/jni /home/pi/AluminatiVision/jre/bin/java -jar /home/pi/Aluminativision/AluminatiVision.jar
