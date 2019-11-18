@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminativision.api;
+package org.aluminati3555.aluminativision.lib;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -29,8 +29,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import org.aluminati3555.aluminativision.api.PipelineConfig.PipelineMode;
-import org.aluminati3555.aluminativision.api.PipelineConfig.TargetMode;
+import org.aluminati3555.aluminativision.lib.PipelineConfig.PipelineMode;
+import org.aluminati3555.aluminativision.lib.PipelineConfig.TargetMode;
 
 /**
  * Utility class for vision system

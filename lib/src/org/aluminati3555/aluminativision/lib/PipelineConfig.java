@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminativision.api;
+package org.aluminati3555.aluminativision.lib;
 
 /**
  * Pipeline config class
