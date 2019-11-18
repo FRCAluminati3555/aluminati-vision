@@ -49,6 +49,14 @@ import javafx.scene.layout.VBox;
  * @author Caleb Heydon
  */
 public class VisionPane extends VBox {
+	/**
+	 * Sends a pipeline config
+	 * 
+	 * @param config
+	 * @param address
+	 * @param port
+	 * @throws IOException
+	 */
 	private void sendConfig(PipelineConfig config, String address, int port) throws IOException {
 		DatagramSocket socket = new DatagramSocket();
 

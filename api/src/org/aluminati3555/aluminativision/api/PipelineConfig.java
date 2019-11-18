@@ -20,41 +20,45 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminativisionutil;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+package org.aluminati3555.aluminativision.api;
 
 /**
- * Main class of the utility program
+ * Pipeline config class
  * 
  * @author Caleb Heydon
  */
-public class AluminatiVisionUtil extends Application {
-	@Override
-	public void start(Stage window) {
-		Scene scene = new Scene(new VisionPane(), 600, 800);
+public class PipelineConfig {
+	// Pipeline mode
+	public PipelineMode pipelineMode = PipelineMode.DRIVER;
 
-		window.setTitle("AluminatiVision Util");
-		window.setResizable(false);
-		window.setScene(scene);
+	// Target mode
+	public TargetMode targetMode = TargetMode.SINGLE;
 
-		// Shutdown nicely when the window is closed
-		window.setOnCloseRequest(e -> {
+	// Thresholding
+	public double thresholdHueMin = 0;
+	public double thresholdHueMax = 180;
 
-			// Use Platform.runLater() to prevent the window from not closing smoothly
-			// (freezes and then closes)
-			Platform.runLater(() -> {
-				System.exit(0);
-			});
-		});
+	public double thresholdSaturationMin = 0;
+	public double thresholdSaturationMax = 255;
 
-		window.show();
+	public double thresholdValueMin = 0;
+	public double thresholdValueMax = 255;
+
+	// Contour filtering
+	public double contourAreaMin = 0;
+	public double contourAreaMax = 1;
+
+	public double contourRatioMin = 0.5;
+	public double contourRatioMax = 1.5;
+
+	public double contourDensityMin = 0;
+	public double contourDensityMax = 1;
+
+	public enum PipelineMode {
+		DRIVER, PROCESSING
 	}
 
-	public static void main(String[] args) {
-		launch(args);
+	public enum TargetMode {
+		SINGLE, DUAL_HORIZONTAL, DUAL_VERTICAL
 	}
 }
