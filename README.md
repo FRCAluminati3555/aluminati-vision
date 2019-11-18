@@ -30,6 +30,15 @@ To set the filesystem to ro run this command:
  sudo mount -o remount,ro /
 ```
 
+# Target info
+The template contains a very basic UDP protocol to transfer the data to the robot, but the user is free to implement any protocol.  AluminatiVision currently does not include any WPILib functions mainly for simplicity.  So, network tables may be more difficult to get going.
+
+# File locations
+The root of this project should be copied to /home/pi on a Raspberry Pi.  The executable should be at /home/pi/AluminatiVision/AluminatiVision.jar.  To run AluminatiVision at startup, create a systemd service to run the startup script (/home/pi/AluminatiVision/AluminatiVision.sh).
+
+# Note about the JVM
+This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
+
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
 
