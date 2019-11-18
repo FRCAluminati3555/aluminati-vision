@@ -20,32 +20,45 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminativisionutil;
-
-import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
+package org.aluminati3555.aluminativision.pipeline;
 
 /**
- * This class is a window to view the output
+ * Pipeline config class
  * 
  * @author Caleb Heydon
  */
-public class OutputWindow {
-	private Stage window;
-	
-	/**
-	 * Displays the window
-	 */
-	public void show() {
-		window.show();
+public class PipelineConfig {
+	// Pipeline mode
+	public PipelineMode pipelineMode = PipelineMode.DRIVER;
+
+	// Target mode
+	public TargetMode targetMode = TargetMode.SINGLE;
+
+	// Thresholding
+	public double thresholdHueMin = 0;
+	public double thresholdHueMax = 180;
+
+	public double thresholdSaturationMin = 0;
+	public double thresholdSaturationMax = 255;
+
+	public double thresholdValueMin = 0;
+	public double thresholdValueMax = 255;
+
+	// Contour filtering
+	public double contourAreaMin = 0;
+	public double contourAreaMax = 1;
+
+	public double contourRatioMin = 0.5;
+	public double contourRatioMax = 1.5;
+
+	public double contourDensityMin = 0;
+	public double contourDensityMax = 1;
+
+	public enum PipelineMode {
+		DRIVER, PROCESSING
 	}
-	
-	public OutputWindow(String text) {
-		window = new Stage();
-		window.setTitle("AluminatiVision Util - Output");
-		
-		Scene scene = new Scene(new TextArea(text), 800, 600);
-		window.setScene(scene);
+
+	public enum TargetMode {
+		SINGLE, DUAL_HORIZONTAL, DUAL_VERTICAL
 	}
 }

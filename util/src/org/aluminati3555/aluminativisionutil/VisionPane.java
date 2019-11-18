@@ -29,8 +29,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import org.aluminati3555.aluminativisionutil.PipelineConfig.PipelineMode;
-import org.aluminati3555.aluminativisionutil.PipelineConfig.TargetMode;
+import org.aluminati3555.aluminativision.pipeline.PipelineConfig;
+import org.aluminati3555.aluminativision.pipeline.PipelineConfig.PipelineMode;
+import org.aluminati3555.aluminativision.pipeline.PipelineConfig.TargetMode;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
