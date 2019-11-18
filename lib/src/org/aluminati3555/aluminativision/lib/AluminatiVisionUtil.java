@@ -22,7 +22,9 @@
 
 package org.aluminati3555.aluminativision.lib;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -84,5 +86,39 @@ public class AluminatiVisionUtil {
 		packet.setAddress(InetAddress.getByName(address));
 		packet.setPort(port);
 		socket.send(packet);
+	}
+
+	/**
+	 * Reads the vision data from the socket. Run in a new thread. This function
+	 * blocks until a packet is received.
+	 * 
+	 * @param socket
+	 * @return
+	 * @throws IOException 
+	 */
+	public static VisionData readVisionData(DatagramSocket socket) throws IOException {
+		VisionData data = new VisionData();
+		
+		byte[] buffer = new byte[65];
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+		
+		socket.receive(packet);
+		
+		ByteArrayInputStream byteInput = new ByteArrayInputStream(buffer);
+		DataInputStream input = new DataInputStream(byteInput);
+		
+		data.fps = input.readDouble();
+		data.timestamp = input.readDouble();
+		data.processingLatency = input.readDouble();
+		data.hasTarget = input.readBoolean();;
+		data.x = input.readDouble();
+		data.y = input.readDouble();
+		data.targetWidth = input.readDouble();
+		data.targetHeight = input.readDouble();
+		data.targetArea = input.readDouble();
+		
+		input.close();
+		
+		return data;
 	}
 }
