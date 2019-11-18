@@ -40,7 +40,7 @@ The root of this project should be copied to /home/pi on a Raspberry Pi.  The ex
 This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
 
 # TODO
- - Target intersection for the dual target modes.  We have attempted to implement this, but we were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
+ - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
 
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
