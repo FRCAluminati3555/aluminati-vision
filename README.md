@@ -1,1 +1,3 @@
-# aluminati-vision
+# AluminatiVision
+
+AluminatiVision is a template for vision processing.
