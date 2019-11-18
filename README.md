@@ -25,8 +25,6 @@ To set the filesystem to rw again, run this:
 ```
  sudo mount -o remount,rw /
 ```
-This sets the root partition to rw.
-
 To set the filesystem to ro run this command:
 ```
  sudo mount -o remount,ro /
