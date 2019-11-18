@@ -8,6 +8,10 @@ AluminatiVision is a template for vision processing: The AluminatiVision.java fi
  - Supports multiple cameras
  - Pipelines can be swapped on the fly
  - Inexpensive hardware (Raspberry Pi 3 B+, The RPi 4 should work even better)
+ - Remote tuning
+ 
+# Remote tuning
+AluminatiVision supports tuning via the util application (needs Java 13).  This allows the HSV and contour filter values to be found quickly and accurately.  Note that you will need to the MJPEG stream in a web browser for tuning and that the values will need to be copied into the vision program itself (in AluminatiVision.java).
  
 # Dependencies
 AluminatiVision only has one dependency OpenCV 4.  Scripts are included for installing the dependencies for OpenCV and for building OpenCV.  If you don't want to setup extra swap space and spend 2 hours compiling, you can use the prebuild OpenCV Java wrapper in the repository.  Please note that the compile options for OpenCV are optimized for the Raspberry Pi and should not be changed.
