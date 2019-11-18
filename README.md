@@ -20,13 +20,13 @@ AluminatiVision only has one dependency OpenCV 4.  Scripts are included for inst
 Since the vision system will be turned off just by cutting the power, it is important the the filesystem does not become corrupt.  The best way to do this is to make the filesystem read-only, but there needs to be a way to switch back and forth between read-only mode and read-write mode so that new programs can be deployed.  The scripts folder contains a script for the initial setup of a read-only filesystem.
 
 To set the filesystem to rw again, run this:
-```shell
+```
  sudo mount -o remount,rw /
 ```
 This sets the root partition to rw.
 
 To set the filesystem to ro run this command:
-```shell
+```
  sudo mount -o remount,ro /
 ```
 
