@@ -9,18 +9,6 @@ AluminatiVision
               |-jre
               |-AluminatiVision.sh
               |-AluminatiVision.jar
-lib
-  |-src
-      |-...
-scripts
-      |-build-opencv.sh
-      |-download-opencv.sh
-      |-install-deps.sh
-      |-pishrink.sh
-      |-read0-only-fs.sh
-util
-   |-src
-       |-...
 ```
 
 Remember to modify the file permissions of the scripts to make them executable.
