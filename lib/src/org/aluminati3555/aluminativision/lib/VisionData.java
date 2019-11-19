@@ -28,6 +28,7 @@ package org.aluminati3555.aluminativision.lib;
  * @author Caleb Heydon
  */
 public class VisionData {
+	public int camera;
 	public double fps;
 	public double timestamp;
 	public double processingLatency;

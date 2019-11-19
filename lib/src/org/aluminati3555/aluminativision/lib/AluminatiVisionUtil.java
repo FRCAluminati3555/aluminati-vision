@@ -107,6 +107,7 @@ public class AluminatiVisionUtil {
 		ByteArrayInputStream byteInput = new ByteArrayInputStream(buffer);
 		DataInputStream input = new DataInputStream(byteInput);
 		
+		data.camera = input.readInt();
 		data.fps = input.readDouble();
 		data.timestamp = input.readDouble();
 		data.processingLatency = input.readDouble();
