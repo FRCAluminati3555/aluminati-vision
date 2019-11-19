@@ -20,6 +20,7 @@ Remember to modify the file permissions of the scripts to make them executable.
  - Pipelines can be swapped on the fly
  - Inexpensive hardware (Raspberry Pi 3 B+, The RPi 4 should work even better)
  - Remote tuning over UDP
+ - Target info over UDP
  - Single and dual target modes
  - Library for robot code (Java)
  
