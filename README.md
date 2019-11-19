@@ -20,8 +20,9 @@ Remember to modify the file permissions of the scripts to make them executable.
  - Pipelines can be swapped on the fly
  - Inexpensive hardware (Raspberry Pi 3 B+, The RPi 4 should work even better)
  - Remote tuning over UDP
+ - Target info over UDP
  - Single and dual target modes
- - Library for robot code
+ - Library for robot code (Java)
  
 # Remote tuning
 AluminatiVision supports tuning via the util application over UDP.  This allows the HSV and contour filter values to be found quickly and accurately.  Note that you will need to the MJPEG stream in a web browser for tuning and that the values will need to be copied into the vision program itself (in AluminatiVision.java).  A binary of this tool will be included with releases.  You will need to use a JRE with JavaFX modules, such as Bellsoft's Java 13 JRE.
