@@ -99,7 +99,7 @@ public class AluminatiVisionUtil {
 	public static VisionData readVisionData(DatagramSocket socket) throws IOException {
 		VisionData data = new VisionData();
 		
-		byte[] buffer = new byte[65];
+		byte[] buffer = new byte[69];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
 		socket.receive(packet);
