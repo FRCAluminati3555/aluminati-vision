@@ -56,6 +56,15 @@ Download the JRE for the Raspberry Pi from this link: https://download.bell-sw.c
 # Note about Windows
 AluminatiVision uses the V4L2 linux driver to control the cameras, so a different driver would be needed for the software to run smoothly on windows (in addition to some path adjustments).
 
+# Streaming cameras to the default dashboard
+Since AluminatiVision does not contain the WPILib libraries, the mjpeg stream will need to be published to network tables from the robot code.  This not very difficult.  You need to add a string array entry (with only one string) to /CameraPublisher/<stream_name>.  The value of the string in the array should be like this:
+```
+mjpeg:http://<ip_or_hostname_of_vision_system>:<port>
+
+Example:
+mjpeg:http://AluminatiVision-3555:5801
+```
+
 # TODO
  - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
 
