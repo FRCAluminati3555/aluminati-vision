@@ -1,0 +1,13 @@
+[Unit]
+Description=AluminatiVision service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh /home/pi/AluminatiVision/AluminatiVision.sh
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
