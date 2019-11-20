@@ -59,10 +59,10 @@ AluminatiVision uses the V4L2 linux driver to control the cameras, so a differen
 # Streaming cameras to the default dashboard
 Since AluminatiVision does not contain the WPILib libraries, the mjpeg stream will need to be published to network tables from the robot code.  This not very difficult.  You need to add a string array entry (with only one string) to /CameraPublisher/<stream_name>.  The value of the string in the array should be like this:
 ```
-mjpeg:http://<ip_or_hostname_of_vision_system>:<port>
+mjpg:http://<ip_or_hostname_of_vision_system>:<port>
 
 Example:
-mjpeg:http://AluminatiVision-3555:5801
+mjpg:http://AluminatiVision-3555:5801
 ```
 
 # TODO
