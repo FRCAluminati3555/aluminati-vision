@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.aluminati3555.aluminativision.VisionUtil;
+import org.aluminati3555.aluminativision.util.VisionUtil;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfInt;
@@ -115,8 +115,8 @@ public class MJPEGServer extends Thread {
 		dispatchThread.addFrame(workingFrame, fps);
 	}
 
-	public MJPEGServer(int port) throws IOException {
-		dispatchThread = new DispatchThread();
+	public MJPEGServer(int port, double fps) throws IOException {
+		dispatchThread = new DispatchThread(fps);
 		dispatchThread.setName("Dispatch-Thread");
 		dispatchThread.setPriority(Thread.MAX_PRIORITY);
 		dispatchThread.start();
@@ -150,6 +150,9 @@ public class MJPEGServer extends Thread {
 	}
 
 	private class DispatchThread extends Thread {
+		private double targetWait;
+		private double lastTime;
+
 		private ArrayList<Mat> frames;
 		private HashMap<Mat, Double> fpsList;
 
@@ -162,41 +165,64 @@ public class MJPEGServer extends Thread {
 
 		@Override
 		public void run() {
+			lastTime = VisionUtil.getTime();
+
 			while (true) {
 				synchronized (frames) {
-					if (frames.size() < 1) {
-						continue;
-					}
+					if (frames.size() > 0) {
+						Mat workingFrame = frames.get(0);
+						double fps = fpsList.get(workingFrame);
 
-					Mat workingFrame = frames.get(0);
-					double fps = fpsList.get(workingFrame);
+						VisionUtil.resize(workingFrame, STREAMING_WIDTH, STREAMING_HEIGHT);
 
-					VisionUtil.resize(workingFrame, STREAMING_WIDTH, STREAMING_HEIGHT);
+						double outputFPS = Double.parseDouble(decimalFormat.format(fps));
+						Imgproc.putText(workingFrame, outputFPS + " FPS", new Point(5, 10), 0, 0.25,
+								new Scalar(0, 255, 0));
 
-					double outputFPS = Double.parseDouble(decimalFormat.format(fps));
-					Imgproc.putText(workingFrame, outputFPS + " FPS", new Point(5, 10), 0, 0.25, new Scalar(0, 255, 0));
+						// See this link for crosshair
+						// https://answers.opencv.org/question/22960/how-to-draw-crosshairsmarked-axes/
 
-					compress(workingFrame);
+						Imgproc.line(workingFrame,
+								new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 - 8),
+								new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 + 8),
+								new Scalar(0, 255, 0), 2);
 
-					byte[] buffer = getJPEGBytes(workingFrame);
-					workingFrame.release();
+						Imgproc.line(workingFrame,
+								new Point(workingFrame.width() / 2.0 - 8, workingFrame.height() / 2.0),
+								new Point(workingFrame.width() / 2.0 + 8, workingFrame.height() / 2.0),
+								new Scalar(0, 255, 0), 2);
 
-					for (int i = 0; i < clients.size(); i++) {
-						try {
-							clients.get(i).sendFrame(buffer);
-						} catch (IOException e) {
-							clients.remove(i);
-							i--;
+						compress(workingFrame);
+
+						byte[] buffer = getJPEGBytes(workingFrame);
+						workingFrame.release();
+
+						for (int i = 0; i < clients.size(); i++) {
+							try {
+								clients.get(i).sendFrame(buffer);
+							} catch (IOException e) {
+								clients.remove(i);
+								i--;
+							}
 						}
-					}
 
-					frames.remove(0);
-					fpsList.remove(workingFrame);
+						frames.remove(0);
+						fpsList.remove(workingFrame);
+					}
 				}
+				
+				double endTime = VisionUtil.getTime();
+				double delta = endTime - lastTime;
+				double waitTime = targetWait - delta;
+
+				lastTime = endTime;
+				VisionUtil.sleep(waitTime);
 			}
 		}
 
-		public DispatchThread() {
+		public DispatchThread(double fps) {
+			this.targetWait = 1 / fps;
+
 			frames = new ArrayList<Mat>();
 			fpsList = new HashMap<Mat, Double>();
 		}

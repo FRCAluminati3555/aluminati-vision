@@ -22,14 +22,13 @@
 
 package org.aluminati3555.aluminativision.net;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 
 /**
  * Sends the vision data as UDP packets
@@ -37,44 +36,42 @@ import java.net.UnknownHostException;
  * @author Caleb Heydon
  */
 public class UDPVisionOutputHandler implements IVisionOutputHandler {
-	private InetAddress address;
-	private int port;
 	private int camera;
 
 	private DatagramSocket socket;
+	
+	private ByteBuffer buffer;
+	private DatagramPacket packet;
 
-	public void update(VisionData data) throws IOException {
+	public synchronized void update(VisionData data) throws IOException {
 		// Add camera number
 		data.camera = camera;
-
-		ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-		DataOutputStream output = new DataOutputStream(byteOutput);
-
-		output.writeInt(data.camera);
-		output.writeDouble(data.fps);
-		output.writeDouble(data.timestamp);
-		output.writeDouble(data.processingLatency);
-		output.writeBoolean(data.hasTarget);
-		output.writeDouble(data.x);
-		output.writeDouble(data.y);
-		output.writeDouble(data.targetWidth);
-		output.writeDouble(data.targetHeight);
-		output.writeDouble(data.targetArea);
-
-		output.close();
-
-		DatagramPacket packet = new DatagramPacket(byteOutput.toByteArray(), byteOutput.toByteArray().length);
-		packet.setAddress(address);
-		packet.setPort(port);
+		
+		buffer.putInt(0, data.camera);
+		buffer.putDouble(4, data.fps);
+		buffer.putDouble(12, data.timestamp);
+		buffer.putDouble(20, data.processingLatency);
+		buffer.putInt(28, data.hasTarget ? 1 : 0);
+		buffer.array()[28] = (byte) (data.hasTarget ? 1 : 0);
+		buffer.putDouble(29, data.x);
+		buffer.putDouble(37, data.y);
+		buffer.putDouble(45, data.targetWidth);
+		buffer.putDouble(53, data.targetHeight);
+		buffer.putDouble(61, data.targetArea);
 		
 		socket.send(packet);
 	}
 
 	public UDPVisionOutputHandler(String address, int port, int camera) throws UnknownHostException, SocketException {
-		this.address = InetAddress.getByName(address);
-		this.port = port;
 		this.camera = camera;
 
 		this.socket = new DatagramSocket();
+		
+		byte[] bufferBytes = new byte[69];
+		this.buffer = ByteBuffer.wrap(bufferBytes);
+		this.packet = new DatagramPacket(bufferBytes, bufferBytes.length);
+		
+		this.packet.setAddress(InetAddress.getByName(address));
+		this.packet.setPort(port);
 	}
 }

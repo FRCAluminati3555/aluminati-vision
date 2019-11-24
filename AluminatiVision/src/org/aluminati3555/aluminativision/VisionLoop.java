@@ -28,6 +28,7 @@ import org.aluminati3555.aluminativision.net.IVisionOutputHandler;
 import org.aluminati3555.aluminativision.net.MJPEGServer;
 import org.aluminati3555.aluminativision.net.VisionData;
 import org.aluminati3555.aluminativision.pipeline.IVisionPipeline;
+import org.aluminati3555.aluminativision.util.VisionUtil;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;

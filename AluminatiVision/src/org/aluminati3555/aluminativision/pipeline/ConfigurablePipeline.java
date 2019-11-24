@@ -24,18 +24,18 @@ package org.aluminati3555.aluminativision.pipeline;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 
-import org.aluminati3555.aluminativision.VisionUtil;
 import org.aluminati3555.aluminativision.net.VisionData;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig.PipelineMode;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig.TargetMode;
+import org.aluminati3555.aluminativision.util.VisionUtil;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -44,14 +44,23 @@ import org.opencv.imgproc.Imgproc;
  * @author Caleb Heydon
  */
 public class ConfigurablePipeline implements IVisionPipeline {
+	private static final Scalar GREEN = new Scalar(0, 255, 0);
+
+	private static final double DILATE_SIZE = 1.6;
+	private static final Mat DILATE_ELEMENT = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,
+			new Size(2 * DILATE_SIZE + 1, 2 * DILATE_SIZE + 1), new Point(DILATE_SIZE, DILATE_SIZE));
+
 	private VisionData visionData;
 	private PipelineConfig pipelineConfig;
+
+	private Scalar minScalar;
+	private Scalar maxScalar;
 
 	private Mat hierarchy;
 	private Mat thresholdFrame;
 
 	private ArrayList<MatOfPoint> contours;
-	private HashMap<Long, Double> contourBoxAreas;
+	private ArrayList<ContourWithArea> contoursWithAreas;
 
 	private Mat outputFrame;
 
@@ -82,25 +91,26 @@ public class ConfigurablePipeline implements IVisionPipeline {
 	 * @param pipelineConfig
 	 */
 	public synchronized void setPipelineConfig(PipelineConfig pipelineConfig) {
+		minScalar = new Scalar(pipelineConfig.thresholdHueMin, pipelineConfig.thresholdSaturationMin,
+				pipelineConfig.thresholdValueMin);
+		maxScalar = new Scalar(pipelineConfig.thresholdHueMax, pipelineConfig.thresholdSaturationMax,
+				pipelineConfig.thresholdValueMax);
 		this.pipelineConfig = pipelineConfig;
 	}
 
 	/**
 	 * Picks a group of contours for dual target modes
 	 */
-	public void sortContours(ArrayList<MatOfPoint> contours) {
+	public void sortContours(ArrayList<ContourWithArea> contours) {
 		if (contours.size() < 2) {
 			return;
 		}
 
-		contours.sort(new Comparator<MatOfPoint>() {
-			public int compare(MatOfPoint contour1, MatOfPoint contour2) {
-				double area1 = contourBoxAreas.get(contour1.getNativeObjAddr());
-				double area2 = contourBoxAreas.get(contour2.getNativeObjAddr());
-
-				if (area1 < area2) {
+		contours.sort(new Comparator<ContourWithArea>() {
+			public int compare(ContourWithArea contour1, ContourWithArea contour2) {
+				if (contour1.area < contour2.area) {
 					return 1;
-				} else if (area1 == area2) {
+				} else if (contour1.area == contour2.area) {
 					return 0;
 				} else {
 					return -1;
@@ -129,16 +139,14 @@ public class ConfigurablePipeline implements IVisionPipeline {
 		Imgproc.cvtColor(frame, thresholdFrame, Imgproc.COLOR_BGR2HSV);
 
 		// Thresholding
-		Core.inRange(thresholdFrame,
-				new Scalar(pipelineConfig.thresholdHueMin, pipelineConfig.thresholdSaturationMin,
-						pipelineConfig.thresholdValueMin),
-				new Scalar(pipelineConfig.thresholdHueMax, pipelineConfig.thresholdSaturationMax,
-						pipelineConfig.thresholdValueMax),
-				thresholdFrame);
+		Core.inRange(thresholdFrame, minScalar, maxScalar, thresholdFrame);
+		
+		// Dilate
+		Imgproc.dilate(thresholdFrame, thresholdFrame, DILATE_ELEMENT);
 
 		// Contours
 		contours.clear();
-		contourBoxAreas.clear();
+		contoursWithAreas.clear();
 
 		Imgproc.findContours(thresholdFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
@@ -152,7 +160,7 @@ public class ConfigurablePipeline implements IVisionPipeline {
 			Rect rect = Imgproc.boundingRect(contours.get(i));
 			double ratio = (double) (rect.width) / rect.height;
 
-			double boxArea = VisionUtil.computeBoxArea(contours.get(i));
+			double boxArea = VisionUtil.computeBoxArea(rect);
 			double density = VisionUtil.computeDensity(actualArea, boxArea);
 
 			if (area < pipelineConfig.contourAreaMin || area > pipelineConfig.contourAreaMax
@@ -163,25 +171,25 @@ public class ConfigurablePipeline implements IVisionPipeline {
 				continue;
 			}
 
-			contourBoxAreas.put(contours.get(i).getNativeObjAddr(), boxArea);
+			contoursWithAreas.add(new ContourWithArea(contours.get(i), rect, boxArea));
 		}
 
 		Imgproc.cvtColor(thresholdFrame, outputFrame, Imgproc.COLOR_GRAY2RGB);
 
 		if (contours.size() > 0) {
-			Imgproc.drawContours(outputFrame, contours, -1, new Scalar(0, 0, 255), 3);
-			sortContours(contours);
+			sortContours(contoursWithAreas);
 
-			Rect rect1 = Imgproc.boundingRect(contours.get(0));
-			Imgproc.rectangle(outputFrame, rect1, new Scalar(0, 255, 0), 3);
+			Rect rect1 = contoursWithAreas.get(0).rect;
+			if (pipelineConfig.targetMode == TargetMode.SINGLE) {
+				Imgproc.rectangle(outputFrame, rect1, GREEN, 3);
+			}
 
 			if ((pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL
 					|| pipelineConfig.targetMode == TargetMode.DUAL_VERTICAL) && contours.size() > 1) {
 				visionData.hasTarget = true;
 
-				Rect rect2 = Imgproc.boundingRect(contours.get(1));
-				Imgproc.rectangle(outputFrame, rect2, new Scalar(0, 255, 0), 3);
-
+				Rect rect2 = contoursWithAreas.get(1).rect;
+				
 				if (pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL) {
 					// Properly order the targets
 					if (rect2.x < rect1.x) {
@@ -222,7 +230,7 @@ public class ConfigurablePipeline implements IVisionPipeline {
 					lowerRight.y = rect2.y + rect2.height;
 				}
 
-				VisionUtil.drawQuadrilateral(outputFrame, 3, upperLeft, upperRight, lowerLeft, lowerRight);
+				VisionUtil.drawQuadrilateral(outputFrame, GREEN, 3, upperLeft, upperRight, lowerLeft, lowerRight);
 
 				visionData.x = 2 * (((((upperLeft.x + lowerLeft.x) / 2) + ((upperRight.x + lowerRight.x) / 2)) / 2)
 						- frame.width() / 2.0) / frame.width();
@@ -265,7 +273,7 @@ public class ConfigurablePipeline implements IVisionPipeline {
 		thresholdFrame = new Mat();
 
 		contours = new ArrayList<MatOfPoint>();
-		contourBoxAreas = new HashMap<Long, Double>();
+		contoursWithAreas = new ArrayList<ContourWithArea>();
 
 		outputFrame = new Mat();
 

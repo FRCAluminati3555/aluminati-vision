@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.aluminati3555.aluminativision;
+package org.aluminati3555.aluminativision.util;
 
 import java.util.concurrent.locks.LockSupport;
 
@@ -158,12 +158,12 @@ public class VisionUtil {
 	 * @param lowerRight
 	 * @return
 	 */
-	public static void drawQuadrilateral(Mat mat, int thickness, Point upperLeft, Point upperRight, Point lowerLeft,
+	public static void drawQuadrilateral(Mat mat, Scalar color, int thickness, Point upperLeft, Point upperRight, Point lowerLeft,
 			Point lowerRight) {
-		Imgproc.line(mat, upperLeft, upperRight, new Scalar(255, 0, 0), thickness);
-		Imgproc.line(mat, upperRight, lowerRight, new Scalar(255, 0, 0), thickness);
-		Imgproc.line(mat, lowerLeft, lowerRight, new Scalar(255, 0, 0), thickness);
-		Imgproc.line(mat, upperLeft, lowerLeft, new Scalar(255, 0, 0), thickness);
+		Imgproc.line(mat, upperLeft, upperRight, color, thickness);
+		Imgproc.line(mat, upperRight, lowerRight, color, thickness);
+		Imgproc.line(mat, lowerLeft, lowerRight, color, thickness);
+		Imgproc.line(mat, upperLeft, lowerLeft, color, thickness);
 	}
 
 	/**

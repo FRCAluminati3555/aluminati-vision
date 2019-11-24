@@ -68,7 +68,7 @@ public class AluminatiVision {
 
 	private static void startMJPEGServers() {
 		try {
-			server0 = new MJPEGServer(5801);
+			server0 = new MJPEGServer(5800, 60);
 		} catch (IOException e) {
 			System.err.println("Error: Unable to start MJPEG server");
 			System.exit(-1);
@@ -108,8 +108,8 @@ public class AluminatiVision {
 		ConfigurablePipeline pipeline0 = new ConfigurablePipeline(config0);
 		IVisionOutputHandler outputHandler0 = null;
 		try {
-			outputHandler0 = new UDPVisionOutputHandler("10.0.0.119", 5801, 0);
-		} catch (UnknownHostException | SocketException e1) {
+			outputHandler0 = new UDPVisionOutputHandler("10.35.55.2", 5800, 0);
+		} catch (UnknownHostException | SocketException e) {
 			System.err.println("Error: Unable to output vision data to robot");
 			System.exit(-1);
 		}
@@ -119,7 +119,7 @@ public class AluminatiVision {
 		loop0.start();
 
 		try {
-			listener0 = new ConfigListener(5801, pipeline0);
+			listener0 = new ConfigListener(5800, pipeline0);
 		} catch (SocketException e) {
 			System.err.println("Error: Unable to start pipeline config listener");
 			System.exit(-1);

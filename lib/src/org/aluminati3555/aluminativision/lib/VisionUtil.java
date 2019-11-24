@@ -39,7 +39,7 @@ import org.aluminati3555.aluminativision.lib.PipelineConfig.TargetMode;
  * 
  * @author Caleb Heydon
  */
-public class AluminatiVisionUtil {
+public class VisionUtil {
 	/**
 	 * Sends a pipeline config to the vision system
 	 * 
