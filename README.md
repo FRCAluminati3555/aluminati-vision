@@ -31,6 +31,9 @@ Remember to modify the file permissions of the scripts to make them executable.
  - Fast garbage collection (usually under 10 ms)
  - All bytecode is translated to machine language immediately at runtime
  
+# Default program
+The default AluminatiVision has an untuned HSV threshold and attempts to track one target and send the target info to 10.35.55.2.
+ 
 # Remote tuning
 AluminatiVision supports tuning via the util application over UDP.  This allows the HSV and contour filter values to be found quickly and accurately while calibrating on the field.  Note that you will need to the MJPEG stream in a web browser for tuning and that the values will need to be copied into the vision program itself (in AluminatiVision.java).  A binary of this tool will be included with releases.  You will need to use a JRE with JavaFX modules, such as Bellsoft's Java 13 JRE.
  
@@ -69,7 +72,7 @@ Since AluminatiVision does not contain the WPILib libraries, the mjpeg stream wi
 mjpg:http://<ip_or_hostname_of_vision_system>:<port>
 
 Example:
-mjpg:http://AluminatiVision-3555:5801
+mjpg:http://AluminatiVision:5800
 ```
 
 # Booster
@@ -83,7 +86,7 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 2. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
 3. Using the hostname AluminatiVision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
 4. Set the filesystem to read-write.
-5. Upload your custom vision program based on the the code in /home/pi/AluminatiVision/src to /home/pi/AluminatiVision/AluminatiVision.jar
+5. Upload your custom vision program based on the the code in /home/pi/AluminatiVision/src to /home/pi/AluminatiVision/AluminatiVision.jar.
 6. Set the filesystem to read-only, and reboot.
 
 # Setup steps (from scratch)
