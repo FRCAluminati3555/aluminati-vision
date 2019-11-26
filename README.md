@@ -108,7 +108,6 @@ This will copy the Booster program to /home/pi/Booster/Booster.
 ./read-only-fs.sh
 ```
 Be sure to select no for all options in the read-only-fs script.
-
 10. Reboot
 
 # Notice
