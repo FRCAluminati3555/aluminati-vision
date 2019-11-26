@@ -136,7 +136,7 @@ sudo make install
 4. Find the OpenCV library file somwhere in /usr/local (The find command may be helpful here).
 5. Copy the library to /home/pi/AluminatiVision/jni.
 6. Remove the /home/pi/opencv folder.
-7. Continue with the steps in the setup instructions.
+7. Navigate back to the scripts directory, and continue with the steps in the setup instructions.
 
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
