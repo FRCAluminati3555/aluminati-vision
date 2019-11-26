@@ -11,7 +11,6 @@ AluminatiVision
               |-AluminatiVision.jar
               
 Booster
-      |-src
       |-Booster
       |-Booster.sh
 ```
