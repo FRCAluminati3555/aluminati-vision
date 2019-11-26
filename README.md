@@ -29,6 +29,7 @@ Remember to modify the file permissions of the scripts to make them executable.
  - Library for robot code (Java)
  - Fast garbage collection (usually under 10 ms)
  - All bytecode is translated to machine language immediately at runtime
+ - Runs as a real-time process on Linux
  
 # Default program
 The default AluminatiVision has an untuned HSV threshold and attempts to track one target and send the target info to 10.35.55.2.
