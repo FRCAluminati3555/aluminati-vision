@@ -65,10 +65,10 @@ public class AluminatiVision {
 	private static void printBanner() {
 		System.out.println("AluminatiVision\nCopyright (c) 2019 Team 3555\n");
 	}
-
+	
 	private static void startMJPEGServers() {
 		try {
-			server0 = new MJPEGServer(5800, 60);
+			server0 = new MJPEGServer(5800);
 		} catch (IOException e) {
 			System.err.println("Error: Unable to start MJPEG server");
 			System.exit(-1);

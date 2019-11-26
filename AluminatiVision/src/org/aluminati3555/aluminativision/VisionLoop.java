@@ -85,13 +85,14 @@ public class VisionLoop extends Thread {
 	public void run() {
 		lastTime = VisionUtil.getTime();
 		Mat frame = new Mat();
-
+		Mat outputFrame;
+		
 		while (!wantsExit) {
 			camera.read(frame);
 
 			double startTime = VisionUtil.getTime();
 			try {
-				frame = visionPipeline.process(frame, currentFPS);
+				outputFrame = visionPipeline.process(frame, currentFPS);
 			} catch (CvException e) {
 				System.err.println("Error: Unable to process frame from " + cameraName);
 				e.printStackTrace();
@@ -110,7 +111,7 @@ public class VisionLoop extends Thread {
 				System.err.println("Error: Unable to send vision data to robot");
 			}
 
-			server.sendFrame(frame, currentFPS);
+			server.sendFrame(outputFrame, currentFPS);
 
 			endTime = VisionUtil.getTime();
 			currentFPS = 1 / (endTime - lastTime);

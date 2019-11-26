@@ -90,12 +90,14 @@ public class ConfigurablePipeline implements IVisionPipeline {
 	 * 
 	 * @param pipelineConfig
 	 */
-	public synchronized void setPipelineConfig(PipelineConfig pipelineConfig) {
-		minScalar = new Scalar(pipelineConfig.thresholdHueMin, pipelineConfig.thresholdSaturationMin,
-				pipelineConfig.thresholdValueMin);
-		maxScalar = new Scalar(pipelineConfig.thresholdHueMax, pipelineConfig.thresholdSaturationMax,
-				pipelineConfig.thresholdValueMax);
-		this.pipelineConfig = pipelineConfig;
+	public void setPipelineConfig(PipelineConfig pipelineConfig) {
+		synchronized (this) {
+			minScalar = new Scalar(pipelineConfig.thresholdHueMin, pipelineConfig.thresholdSaturationMin,
+					pipelineConfig.thresholdValueMin);
+			maxScalar = new Scalar(pipelineConfig.thresholdHueMax, pipelineConfig.thresholdSaturationMax,
+					pipelineConfig.thresholdValueMax);
+			this.pipelineConfig = pipelineConfig;
+		}
 	}
 
 	/**
@@ -123,139 +125,141 @@ public class ConfigurablePipeline implements IVisionPipeline {
 	 * Processes a frame
 	 */
 	public Mat process(Mat frame, double fps) {
-		visionData.fps = fps;
-		visionData.hasTarget = false;
-		visionData.targetWidth = 0;
-		visionData.targetHeight = 0;
-		visionData.targetArea = 0;
-		visionData.x = 0;
-		visionData.y = 0;
+		synchronized (this) {
+			visionData.fps = fps;
+			visionData.hasTarget = false;
+			visionData.targetWidth = 0;
+			visionData.targetHeight = 0;
+			visionData.targetArea = 0;
+			visionData.x = 0;
+			visionData.y = 0;
 
-		if (pipelineConfig.pipelineMode == PipelineMode.DRIVER) {
-			return frame;
-		}
-
-		// Convert to hsv
-		Imgproc.cvtColor(frame, thresholdFrame, Imgproc.COLOR_BGR2HSV);
-
-		// Thresholding
-		Core.inRange(thresholdFrame, minScalar, maxScalar, thresholdFrame);
-		
-		// Dilate
-		Imgproc.dilate(thresholdFrame, thresholdFrame, DILATE_ELEMENT);
-
-		// Contours
-		contours.clear();
-		contoursWithAreas.clear();
-
-		Imgproc.findContours(thresholdFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
-		double frameArea = (double) (frame.width() * frame.height());
-
-		// Filter contours
-		for (int i = 0; i < contours.size(); i++) {
-			double actualArea = Imgproc.contourArea(contours.get(i));
-			double area = actualArea / frameArea;
-
-			Rect rect = Imgproc.boundingRect(contours.get(i));
-			double ratio = (double) (rect.width) / rect.height;
-
-			double boxArea = VisionUtil.computeBoxArea(rect);
-			double density = VisionUtil.computeDensity(actualArea, boxArea);
-
-			if (area < pipelineConfig.contourAreaMin || area > pipelineConfig.contourAreaMax
-					|| ratio < pipelineConfig.contourRatioMin || ratio > pipelineConfig.contourRatioMax
-					|| density < pipelineConfig.contourDensityMin || density > pipelineConfig.contourDensityMax) {
-				contours.remove(i);
-				i--;
-				continue;
+			if (pipelineConfig.pipelineMode == PipelineMode.DRIVER) {
+				return frame;
 			}
 
-			contoursWithAreas.add(new ContourWithArea(contours.get(i), rect, boxArea));
-		}
+			// Convert to hsv
+			Imgproc.cvtColor(frame, thresholdFrame, Imgproc.COLOR_BGR2HSV);
 
-		Imgproc.cvtColor(thresholdFrame, outputFrame, Imgproc.COLOR_GRAY2RGB);
+			// Thresholding
+			Core.inRange(thresholdFrame, minScalar, maxScalar, thresholdFrame);
+			
+			// Dilate
+			Imgproc.dilate(thresholdFrame, thresholdFrame, DILATE_ELEMENT);
 
-		if (contours.size() > 0) {
-			sortContours(contoursWithAreas);
+			// Contours
+			contours.clear();
+			contoursWithAreas.clear();
 
-			Rect rect1 = contoursWithAreas.get(0).rect;
-			if (pipelineConfig.targetMode == TargetMode.SINGLE) {
-				Imgproc.rectangle(outputFrame, rect1, GREEN, 3);
-			}
+			Imgproc.findContours(thresholdFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-			if ((pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL
-					|| pipelineConfig.targetMode == TargetMode.DUAL_VERTICAL) && contours.size() > 1) {
-				visionData.hasTarget = true;
+			double frameArea = (double) (frame.width() * frame.height());
 
-				Rect rect2 = contoursWithAreas.get(1).rect;
-				
-				if (pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL) {
-					// Properly order the targets
-					if (rect2.x < rect1.x) {
-						Rect temp = rect1;
-						rect1 = rect2;
-						rect2 = temp;
-					}
+			// Filter contours
+			for (int i = 0; i < contours.size(); i++) {
+				double actualArea = Imgproc.contourArea(contours.get(i));
+				double area = actualArea / frameArea;
 
-					upperLeft.x = rect1.x;
-					upperLeft.y = rect1.y;
+				Rect rect = Imgproc.boundingRect(contours.get(i));
+				double ratio = (double) (rect.width) / rect.height;
 
-					upperRight.x = rect2.x + rect2.width;
-					upperRight.y = rect2.y;
+				double boxArea = VisionUtil.computeBoxArea(rect);
+				double density = VisionUtil.computeDensity(actualArea, boxArea);
 
-					lowerLeft.x = rect1.x;
-					lowerLeft.y = rect1.y + rect1.height;
-
-					lowerRight.x = rect2.x + rect2.width;
-					lowerRight.y = rect2.y + rect2.height;
-				} else {
-					// Properly order the targets
-					if (rect2.y < rect1.y) {
-						Rect temp = rect1;
-						rect1 = rect2;
-						rect2 = temp;
-					}
-
-					upperLeft.x = rect1.x;
-					upperLeft.y = rect1.y;
-
-					upperRight.x = rect1.x + rect1.width;
-					upperRight.y = rect1.y;
-
-					lowerLeft.x = rect2.x;
-					lowerLeft.y = rect2.y + rect2.height;
-
-					lowerRight.x = rect2.x + rect2.width;
-					lowerRight.y = rect2.y + rect2.height;
+				if (area < pipelineConfig.contourAreaMin || area > pipelineConfig.contourAreaMax
+						|| ratio < pipelineConfig.contourRatioMin || ratio > pipelineConfig.contourRatioMax
+						|| density < pipelineConfig.contourDensityMin || density > pipelineConfig.contourDensityMax) {
+					contours.remove(i);
+					i--;
+					continue;
 				}
 
-				VisionUtil.drawQuadrilateral(outputFrame, GREEN, 3, upperLeft, upperRight, lowerLeft, lowerRight);
-
-				visionData.x = 2 * (((((upperLeft.x + lowerLeft.x) / 2) + ((upperRight.x + lowerRight.x) / 2)) / 2)
-						- frame.width() / 2.0) / frame.width();
-				visionData.y = 2 * -(((((upperLeft.y + lowerLeft.y) / 2) + ((upperRight.y + lowerRight.y) / 2)) / 2)
-						- frame.height() / 2.0) / frame.height();
-
-				visionData.targetWidth = VisionUtil.computeQuadrilateralWidth(upperLeft, upperRight, lowerLeft,
-						lowerRight) / frameArea;
-				visionData.targetHeight = VisionUtil.computeQuadrilateralHeight(upperLeft, upperRight, lowerLeft,
-						lowerRight) / frameArea;
-				visionData.targetArea = VisionUtil.computeQuadrilateralArea(upperLeft, upperRight, lowerLeft,
-						lowerRight) / frameArea;
-			} else if (pipelineConfig.targetMode == TargetMode.SINGLE) {
-				visionData.hasTarget = true;
-
-				visionData.x = 2 * (rect1.x + rect1.width / 2.0 - frame.width() / 2.0) / frame.width();
-				visionData.y = 2 * -(rect1.y + rect1.height / 2.0 - frame.height() / 2.0) / frame.height();
-
-				visionData.targetWidth = (double) (rect1.width) / frame.width();
-				visionData.targetHeight = (double) (rect1.height) / frame.height();
-				visionData.targetArea = ((double) rect1.width * rect1.height) / frameArea;
+				contoursWithAreas.add(new ContourWithArea(contours.get(i), rect, boxArea));
 			}
-		}
 
-		return outputFrame;
+			Imgproc.cvtColor(thresholdFrame, outputFrame, Imgproc.COLOR_GRAY2RGB);
+
+			if (contours.size() > 0) {
+				sortContours(contoursWithAreas);
+
+				Rect rect1 = contoursWithAreas.get(0).rect;
+				if (pipelineConfig.targetMode == TargetMode.SINGLE) {
+					Imgproc.rectangle(outputFrame, rect1, GREEN, 3);
+				}
+
+				if ((pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL
+						|| pipelineConfig.targetMode == TargetMode.DUAL_VERTICAL) && contours.size() > 1) {
+					visionData.hasTarget = true;
+
+					Rect rect2 = contoursWithAreas.get(1).rect;
+					
+					if (pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL) {
+						// Properly order the targets
+						if (rect2.x < rect1.x) {
+							Rect temp = rect1;
+							rect1 = rect2;
+							rect2 = temp;
+						}
+
+						upperLeft.x = rect1.x;
+						upperLeft.y = rect1.y;
+
+						upperRight.x = rect2.x + rect2.width;
+						upperRight.y = rect2.y;
+
+						lowerLeft.x = rect1.x;
+						lowerLeft.y = rect1.y + rect1.height;
+
+						lowerRight.x = rect2.x + rect2.width;
+						lowerRight.y = rect2.y + rect2.height;
+					} else {
+						// Properly order the targets
+						if (rect2.y < rect1.y) {
+							Rect temp = rect1;
+							rect1 = rect2;
+							rect2 = temp;
+						}
+
+						upperLeft.x = rect1.x;
+						upperLeft.y = rect1.y;
+
+						upperRight.x = rect1.x + rect1.width;
+						upperRight.y = rect1.y;
+
+						lowerLeft.x = rect2.x;
+						lowerLeft.y = rect2.y + rect2.height;
+
+						lowerRight.x = rect2.x + rect2.width;
+						lowerRight.y = rect2.y + rect2.height;
+					}
+
+					VisionUtil.drawQuadrilateral(outputFrame, GREEN, 3, upperLeft, upperRight, lowerLeft, lowerRight);
+
+					visionData.x = 2 * (((((upperLeft.x + lowerLeft.x) / 2) + ((upperRight.x + lowerRight.x) / 2)) / 2)
+							- frame.width() / 2.0) / frame.width();
+					visionData.y = 2 * -(((((upperLeft.y + lowerLeft.y) / 2) + ((upperRight.y + lowerRight.y) / 2)) / 2)
+							- frame.height() / 2.0) / frame.height();
+
+					visionData.targetWidth = VisionUtil.computeQuadrilateralWidth(upperLeft, upperRight, lowerLeft,
+							lowerRight) / frameArea;
+					visionData.targetHeight = VisionUtil.computeQuadrilateralHeight(upperLeft, upperRight, lowerLeft,
+							lowerRight) / frameArea;
+					visionData.targetArea = VisionUtil.computeQuadrilateralArea(upperLeft, upperRight, lowerLeft,
+							lowerRight) / frameArea;
+				} else if (pipelineConfig.targetMode == TargetMode.SINGLE) {
+					visionData.hasTarget = true;
+
+					visionData.x = 2 * (rect1.x + rect1.width / 2.0 - frame.width() / 2.0) / frame.width();
+					visionData.y = 2 * -(rect1.y + rect1.height / 2.0 - frame.height() / 2.0) / frame.height();
+
+					visionData.targetWidth = (double) (rect1.width) / frame.width();
+					visionData.targetHeight = (double) (rect1.height) / frame.height();
+					visionData.targetArea = ((double) rect1.width * rect1.height) / frameArea;
+				}
+			}
+
+			return outputFrame;
+		}
 	}
 
 	public void release() {

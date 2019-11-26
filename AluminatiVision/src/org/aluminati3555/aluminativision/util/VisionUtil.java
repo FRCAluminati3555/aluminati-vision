@@ -50,7 +50,7 @@ public class VisionUtil {
 
 		return area;
 	}
-	
+
 	/**
 	 * Returns the area of the bounding box of a contour
 	 * 
@@ -98,7 +98,7 @@ public class VisionUtil {
 		double boxArea = (double) (rect.width) * rect.height;
 		return contourArea / boxArea;
 	}
-	
+
 	/**
 	 * Computes the density of the contour from the box area and the pixels used
 	 * (between 0 and 1)
@@ -158,8 +158,8 @@ public class VisionUtil {
 	 * @param lowerRight
 	 * @return
 	 */
-	public static void drawQuadrilateral(Mat mat, Scalar color, int thickness, Point upperLeft, Point upperRight, Point lowerLeft,
-			Point lowerRight) {
+	public static void drawQuadrilateral(Mat mat, Scalar color, int thickness, Point upperLeft, Point upperRight,
+			Point lowerLeft, Point lowerRight) {
 		Imgproc.line(mat, upperLeft, upperRight, color, thickness);
 		Imgproc.line(mat, upperRight, lowerRight, color, thickness);
 		Imgproc.line(mat, lowerLeft, lowerRight, color, thickness);

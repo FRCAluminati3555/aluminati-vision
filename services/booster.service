@@ -1,0 +1,13 @@
+[Unit]
+Description=Booster service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh /home/pi/Booster/Booster.sh
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
