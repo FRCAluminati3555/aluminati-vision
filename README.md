@@ -120,6 +120,20 @@ Be sure to select no for all options in the read-only-fs script.
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
 
+# Building OpenCV
+A prebuild OpenCV library comes with AluminatiVision (in the repository even).  However, if a new version becomes available and we have not gotten around to building it and publishing it here, the project also contains all of the scripts necessary to build your own OpenCV library for Java.
+
+1. Complete the steps in Setup steps (from scratch) up through ./install-dep.sh.
+2. Run the following commands
+```
+./download-opencv.sh
+./build-opencv.sh
+cd ../opencv/build
+make
+sudo make install
+```
+3. Find the OpenCV library file somwhere in /usr/local (The find command may be helpful here).
+
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
 
