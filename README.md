@@ -106,9 +106,9 @@ This will copy the Booster program to /home/pi/Booster/Booster.
 ./install-vision-service.sh
 ./install-vision-service.sh
 ./read-only-fs.sh
+sudo reboot
 ```
 Be sure to select no for all options in the read-only-fs script.
-10. Reboot
 
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
