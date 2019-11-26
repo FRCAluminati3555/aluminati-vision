@@ -117,6 +117,9 @@ sudo reboot
 ```
 Be sure to select no for all options in the read-only-fs script.
 
+# Library
+The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
+
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
 
