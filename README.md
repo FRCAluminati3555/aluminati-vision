@@ -51,7 +51,7 @@ To set the filesystem to ro run this command:
 The template contains a very basic UDP protocol to transfer the data to the robot, but the user is free to implement any protocol.  AluminatiVision currently does not include any WPILib functions mainly for simplicity.  So, network tables may be more difficult to get working.
 
 # File locations
-The root of this project should be copied to /home/pi on a Raspberry Pi.  The executable should be at /home/pi/AluminatiVision/AluminatiVision.jar.  To run AluminatiVision at startup, create a systemd service to run the startup script (/home/pi/AluminatiVision/AluminatiVision.sh).
+The root of this project should be copied to /home/pi on a Raspberry Pi.  The executable should be at /home/pi/AluminatiVision/AluminatiVision.jar.  To run AluminatiVision at startup, create a systemd service to run the startup script (/home/pi/AluminatiVision/AluminatiVision.sh).  The Booster program should have a similar setup in the /home/pi/Booster folder.
 
 # Note about the JVM
 This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
@@ -75,6 +75,38 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 
 # TODO
  - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
+
+# Setup steps (using premade image)
+1. Flash premade image to an SD card.
+2. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
+3. Using the hostname AluminatiVision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
+4. Set the filesystem to read-write.
+5. Upload your custom vision program based on the the code in /home/pi/AluminatiVision/src to /home/pi/AluminatiVision/AluminatiVision.jar
+6. Set the filesystem to read-only, and reboot.
+
+# Setup steps (from scratch)
+1. Flash Raspbian Buster to an SD card.
+2. Add empty SSH file to "boot" partition.
+3. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
+4. Using the hostname raspberrypi.local, log in with SSH and SCP (username: pi, password: raspberry).
+5. Upload the repository to the home directory so that the root of this project is located at /home/pi.
+6. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
+7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
+8. Navigate to /home/pi/Booster/src, and run
+```
+make
+make install
+```
+This will copy the Booster program to /home/pi/Booster/Booster.
+9. Navigate to /home/pi/scripts and the the following commands:
+```
+./install-dep.sh
+./install-vision-service.sh
+./install-vision-service.sh
+./read-only-fs.sh
+```
+Be sure to select no for all options in the read-only-fs script.
+10. Reboot
 
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
