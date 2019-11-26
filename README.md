@@ -1,6 +1,6 @@
 # AluminatiVision
 
-AluminatiVision is a template for vision processing: The AluminatiVision.java file can be customized by the user for a wide range of vision processing tasks.  It uses OpenCV 4 for fast image processing and has a system for making custom pipelines using a variety of parameters (HSV and contour filters).  The application is capable of hosting MJPEG servers for the cameras.  Multiple cameras can be used.  The pipelines are known to run very quickly on the Raspberry Pi 3 B+ (~4 ms).  AluminatiVision should work well with very little modification (such as setting IP addresses and adjusting HSV and contour filters).  More complicated modifications are required to add more cameras.
+AluminatiVision is a template for vision processing: The AluminatiVision.java file can be customized by the user for a wide range of vision processing tasks.  It uses OpenCV 4 for fast image processing and has a system for making custom pipelines using a variety of parameters (HSV and contour filters).  The application is capable of hosting MJPEG servers for the cameras.  Multiple cameras can be used.  The pipelines are known to run very quickly on the Raspberry Pi 4 B+ (~2 ms).  AluminatiVision should work well with very little modification (such as setting IP addresses and adjusting HSV and contour filters).  More complicated modifications are required to add more cameras.
 
 When all of the components are compiled/added to the source tree, the directory structure should look like this:
 ```
