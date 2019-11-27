@@ -95,7 +95,7 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 # Setup steps (from scratch)
 1. Flash Raspbian Buster to an SD card.
 2. Add empty SSH file to "boot" partition.
-3. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
+3. Connect the Raspberry Pi to your computer with ethernet (bridged to Internet), and boot from the SD card.
 4. Using the hostname raspberrypi.local, log in with SSH and SCP (username: pi, password: raspberry).
 5. Upload the repository to the home directory so that the root of this project is located at /home/pi.
 6. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
