@@ -102,7 +102,7 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
 8. Navigate to /home/pi/scripts and the the following commands:
 ```
-./install-dep.sh
+./install-deps.sh
 ./remove-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
