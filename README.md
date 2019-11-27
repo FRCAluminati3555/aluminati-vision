@@ -126,7 +126,7 @@ The lib/src directory contains Java code for communicating with AluminatiVision 
 A prebuild OpenCV library comes with AluminatiVision (in the repository even).  However, if a new version becomes available and we have not gotten around to building it and publishing it here, the project also contains all of the scripts necessary to build your own OpenCV library for Java.
 
 1. Complete the steps in Setup steps (from scratch) up through ./install-dep.sh.
-2. Setup swapspace if you have less than 4 GB of memory (Instructions here https://gist.github.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60).
+2. Setup swapspace if you have less than 4 GB of memory (Instructions here https://gist.github.com/willprice/abe456f5f74aa95d7e0bb81d5a710b60.  You will also need to set the max swap size in /etc/dphys-swapfile).
 3. Run the following commands
 ```
 ./download-opencv.sh
