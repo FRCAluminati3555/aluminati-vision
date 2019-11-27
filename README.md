@@ -35,7 +35,7 @@ Remember to modify the file permissions of the scripts to make them executable.
  - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
  
 # Default program
-The default AluminatiVision has an untuned HSV threshold and attempts to track one target and send the target info to 10.35.55.2.
+The default AluminatiVision has an untuned HSV threshold and contour filters and attempts to track one target and send the target info to 10.35.55.2.
 
 # Cameras
 Any USB camera that supports V4L2 and a 320x240 resolution should work with AluminatiVision.  Currently only 30 FPS cameras have been tested due to hardware availability.  However, the software is fast enough that it should be able to support at least 90 FPS.
