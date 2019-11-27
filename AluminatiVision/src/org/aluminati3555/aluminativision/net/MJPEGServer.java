@@ -122,12 +122,10 @@ public class MJPEGServer extends Thread {
 			// https://answers.opencv.org/question/22960/how-to-draw-crosshairsmarked-axes/
 
 			Imgproc.line(workingFrame, new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 - 8),
-					new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 + 8),
-					new Scalar(0, 255, 0), 2);
+					new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 + 8), new Scalar(0, 255, 0), 2);
 
 			Imgproc.line(workingFrame, new Point(workingFrame.width() / 2.0 - 8, workingFrame.height() / 2.0),
-					new Point(workingFrame.width() / 2.0 + 8, workingFrame.height() / 2.0),
-					new Scalar(0, 255, 0), 2);
+					new Point(workingFrame.width() / 2.0 + 8, workingFrame.height() / 2.0), new Scalar(0, 255, 0), 2);
 
 			compress(workingFrame);
 
@@ -154,12 +152,23 @@ public class MJPEGServer extends Thread {
 	private class ClientHandler {
 		private OutputStream outputStream;
 
+		/**
+		 * Starts the initial response to the client
+		 * 
+		 * @throws IOException
+		 */
 		public void start() throws IOException {
 			outputStream.write(("HTTP/1.0 200 OK\r\nServer: " + SERVER_NAME
 					+ "\r\nContent-Type: multipart/x-mixed-replace; boundary=--BoundaryString\r\n\r\n").getBytes());
 			outputStream.flush();
 		}
 
+		/**
+		 * Sends a frame after the response has been started
+		 * 
+		 * @param frame
+		 * @throws IOException
+		 */
 		public void sendFrame(byte[] frame) throws IOException {
 			outputStream.write(
 					("--BoundaryString\r\nContent-Type: image/jpeg\r\nContent-Length: " + frame.length + "\r\n\r\n")

@@ -35,7 +35,7 @@ import org.aluminati3555.aluminativision.pipeline.PipelineConfig.PipelineMode;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig.TargetMode;
 
 /**
- * This class listens on a udp port for a pipeline configuration
+ * This class listens on a udp port for a pipeline configuration over udp
  * 
  * @author Caleb Heydon
  */

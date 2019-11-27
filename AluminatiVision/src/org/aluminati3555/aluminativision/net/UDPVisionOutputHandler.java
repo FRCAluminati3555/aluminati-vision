@@ -39,14 +39,17 @@ public class UDPVisionOutputHandler implements IVisionOutputHandler {
 	private int camera;
 
 	private DatagramSocket socket;
-	
+
 	private ByteBuffer buffer;
 	private DatagramPacket packet;
 
+	/**
+	 * Sends the vision data to the robot
+	 */
 	public synchronized void update(VisionData data) throws IOException {
 		// Add camera number
 		data.camera = camera;
-		
+
 		buffer.putInt(0, data.camera);
 		buffer.putDouble(4, data.fps);
 		buffer.putDouble(12, data.timestamp);
@@ -58,7 +61,7 @@ public class UDPVisionOutputHandler implements IVisionOutputHandler {
 		buffer.putDouble(45, data.targetWidth);
 		buffer.putDouble(53, data.targetHeight);
 		buffer.putDouble(61, data.targetArea);
-		
+
 		socket.send(packet);
 	}
 
@@ -66,11 +69,11 @@ public class UDPVisionOutputHandler implements IVisionOutputHandler {
 		this.camera = camera;
 
 		this.socket = new DatagramSocket();
-		
+
 		byte[] bufferBytes = new byte[69];
 		this.buffer = ByteBuffer.wrap(bufferBytes);
 		this.packet = new DatagramPacket(bufferBytes, bufferBytes.length);
-		
+
 		this.packet.setAddress(InetAddress.getByName(address));
 		this.packet.setPort(port);
 	}

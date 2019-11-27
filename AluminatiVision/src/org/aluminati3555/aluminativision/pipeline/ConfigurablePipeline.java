@@ -143,7 +143,7 @@ public class ConfigurablePipeline implements IVisionPipeline {
 
 			// Thresholding
 			Core.inRange(thresholdFrame, minScalar, maxScalar, thresholdFrame);
-			
+
 			// Dilate
 			Imgproc.dilate(thresholdFrame, thresholdFrame, DILATE_ELEMENT);
 
@@ -151,7 +151,8 @@ public class ConfigurablePipeline implements IVisionPipeline {
 			contours.clear();
 			contoursWithAreas.clear();
 
-			Imgproc.findContours(thresholdFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+			Imgproc.findContours(thresholdFrame, contours, hierarchy, Imgproc.RETR_EXTERNAL,
+					Imgproc.CHAIN_APPROX_SIMPLE);
 
 			double frameArea = (double) (frame.width() * frame.height());
 
@@ -192,7 +193,7 @@ public class ConfigurablePipeline implements IVisionPipeline {
 					visionData.hasTarget = true;
 
 					Rect rect2 = contoursWithAreas.get(1).rect;
-					
+
 					if (pipelineConfig.targetMode == TargetMode.DUAL_HORIZONTAL) {
 						// Properly order the targets
 						if (rect2.x < rect1.x) {
@@ -262,6 +263,9 @@ public class ConfigurablePipeline implements IVisionPipeline {
 		}
 	}
 
+	/**
+	 * Releases all memory being used by the pipeline
+	 */
 	public void release() {
 		thresholdFrame.release();
 		hierarchy.release();
