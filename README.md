@@ -109,7 +109,7 @@ This will copy the Booster program to /home/pi/Booster/Booster.
 9. Navigate to /home/pi/scripts and the the following commands:
 ```
 ./install-dep.sh
-./remote-services.sh
+./remove-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
 ./read-only-fs.sh
