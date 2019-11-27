@@ -100,22 +100,22 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 5. Upload the repository to the home directory so that the root of this project is located at /home/pi.
 6. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
 7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
-8. Navigate to /home/pi/Booster/src, and run
-```
-make
-make install
-```
-This will copy the Booster program to /home/pi/Booster/Booster.
-9. Navigate to /home/pi/scripts and the the following commands:
+8. Navigate to /home/pi/scripts and the the following commands:
 ```
 ./install-dep.sh
 ./remove-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
 ./read-only-fs.sh
-sudo reboot
 ```
 Be sure to select no for all options in the read-only-fs script.
+
+9. Navigate to /home/pi/Booster/src, and run
+```
+make
+make install
+```
+This will copy the Booster program to /home/pi/Booster/Booster.
 
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
