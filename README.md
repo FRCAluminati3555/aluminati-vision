@@ -131,7 +131,7 @@ A prebuild OpenCV library comes with AluminatiVision (in the repository even).  
 ```
 ./download-opencv.sh
 ./build-opencv.sh
-cd ../opencv/build
+cd ../opencv/opencv-<version>/build
 sudo make install
 ```
 4. Find the OpenCV library file somwhere in /usr/local (The find command may be helpful here).
