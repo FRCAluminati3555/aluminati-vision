@@ -108,18 +108,17 @@ chmod +x *.sh
 ./remove-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
-./read-only-fs.sh
 ```
-Be sure to select no for all options in the read-only-fs script.
 
 9. Set the filesystem to read-write, and navigate to /home/pi/Booster/src, and run
 ```
 make
 make install
+./read-only-fs.sh
 ```
-This will copy the Booster program to /home/pi/Booster/Booster.
+This will copy the Booster program to /home/pi/Booster/Booster and make the filesystem read-only. Be sure to select no for all options in the read-only-fs script.
 
-10. Set the filesystem to read-only, and reboot
+10. Reboot
 
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
