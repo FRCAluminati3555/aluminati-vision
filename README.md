@@ -119,7 +119,7 @@ make install
 ```
 This will copy the Booster program to /home/pi/Booster/Booster.
 
-10. Reboot
+10. Set the filesystem to read-only, and reboot
 
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
