@@ -114,6 +114,7 @@ chmod +x *.sh
 ```
 make
 make install
+cd ../scripts
 ./read-only-fs.sh
 ```
 This will copy the Booster program to /home/pi/Booster/Booster and make the filesystem read-only. Be sure to select no for all options in the read-only-fs script.
