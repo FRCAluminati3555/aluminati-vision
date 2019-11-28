@@ -111,7 +111,7 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 ```
 Be sure to select no for all options in the read-only-fs script.
 
-9. Navigate to /home/pi/Booster/src, and run
+9. Set the filesystem to read-write, and navigate to /home/pi/Booster/src, and run
 ```
 make
 make install
