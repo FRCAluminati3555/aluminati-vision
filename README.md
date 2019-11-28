@@ -20,6 +20,7 @@ Remember to modify the file permissions of the scripts to make them executable.
 # Features
  - Highly customizable
  - Fast custom pipelines
+ - HSV thresholding and contour filtering
  - Supports multiple cameras
  - Pipelines can be swapped on the fly
  - Inexpensive hardware (Raspberry Pi 4 B and whatever cameras you want)
