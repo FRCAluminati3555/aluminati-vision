@@ -103,20 +103,21 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
 8. Navigate to /home/pi/scripts and the the following commands:
 ```
+chmod +x *.sh
 ./install-deps.sh
 ./remove-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
-./read-only-fs.sh
 ```
-Be sure to select no for all options in the read-only-fs script.
 
-9. Navigate to /home/pi/Booster/src, and run
+9. Set the filesystem to read-write, and navigate to /home/pi/Booster/src, and run
 ```
 make
 make install
+cd ../../scripts
+sudo ./read-only-fs.sh
 ```
-This will copy the Booster program to /home/pi/Booster/Booster.
+This will copy the Booster program to /home/pi/Booster/Booster and make the filesystem read-only. Be sure to select no for all options in the read-only-fs script.
 
 10. Reboot
 
