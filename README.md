@@ -134,7 +134,7 @@ A prebuild OpenCV library comes with AluminatiVision (in the repository even).  
 cd ../opencv/opencv-<version>/build
 sudo make install
 ```
-4. Find the OpenCV library file somwhere in /usr/local (The find command may be helpful here).
+4. Find the OpenCV Java library file somwhere in /usr/local/share/java/opencv4.
 5. Copy the library to /home/pi/AluminatiVision/jni.
 6. Remove the /home/pi/opencv folder.
 7. Navigate back to the scripts directory, and continue with the steps in the setup instructions.
