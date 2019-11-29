@@ -110,7 +110,7 @@ chmod +x *.sh
 ./install-booster-service.sh
 ```
 
-9. Set the filesystem to read-write, and navigate to /home/pi/Booster/src, and run
+9. Run
 ```
 make
 make install
