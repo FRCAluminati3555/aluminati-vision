@@ -112,6 +112,7 @@ chmod +x *.sh
 
 9. Run
 ```
+cd ../Booster/src
 make
 make install
 cd ../../scripts
