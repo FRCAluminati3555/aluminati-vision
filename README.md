@@ -18,6 +18,7 @@ Booster
 Remember to modify the file permissions of the scripts to make them executable.
 
 ![example-2016](https://github.com/FRCAluminati3555/aluminati-vision/raw/master/images/example-2016.png)
+
 Original image from GRIP
 
 # Features
