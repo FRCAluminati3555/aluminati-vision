@@ -101,7 +101,8 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 5. Upload the repository to the home directory so that the root of this project is located at /home/pi.
 6. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
 7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
-8. Navigate to /home/pi/scripts and the the following commands:
+8. Disable wifi and bluetooth (see other section).
+9. Navigate to /home/pi/scripts and the the following commands:
 ```
 chmod +x *.sh
 ./install-deps.sh
@@ -110,7 +111,7 @@ chmod +x *.sh
 ./install-booster-service.sh
 ```
 
-9. Run
+10. Run
 ```
 cd ../Booster/src
 make
@@ -120,7 +121,7 @@ sudo ./read-only-fs.sh
 ```
 This will copy the Booster program to /home/pi/Booster/Booster and make the filesystem read-only. Be sure to select no for all options in the read-only-fs script.
 
-10. Reboot
+11. Reboot
 
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
@@ -141,6 +142,14 @@ sudo make install
 5. Copy the library to /home/pi/AluminatiVision/jni.
 6. Remove the /home/pi/opencv folder.
 7. Navigate back to the scripts directory, and continue with the steps in the setup instructions.
+
+# Disabling wifi and bluetooth
+FRC requires that all wireless communcation be disabled on the Raspberry Pi to use it in competition.  Add these lines to /boot/config.txt to disable both wifi and bluetooth.
+```
+dtoverlay=disable-wifi
+dtoverlay=disable-bt
+```
+https://raspberrypi.stackexchange.com/questions/43720/disable-wifi-wlan0-on-pi-3
 
 # Notice
 The scripts have been collected from various projects and are released under different licenses.  Here is a list of links to these projects:
