@@ -39,6 +39,7 @@ Original image from WPILib documentation
  - Fast garbage collection (usually under 10 ms)
  - All bytecode is translated to machine language immediately at runtime
  - Runs as a real-time process on Linux
+ - Camera stream FPS limiting
  
 # TODO
  - Target intersection for the dual target modes.  We have attempted to implement this.  We were not able to get it to work reliably, so we removed it.  Suggestions on how to do this are welcome.
