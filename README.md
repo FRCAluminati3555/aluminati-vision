@@ -74,7 +74,7 @@ The template contains a very basic UDP protocol to transfer the data to the robo
 The root of this project should be copied to /home/pi on a Raspberry Pi.  The executable should be at /home/pi/AluminatiVision/AluminatiVision.jar.  To run AluminatiVision at startup, create a systemd service to run the startup script (/home/pi/AluminatiVision/AluminatiVision.sh).  The Booster program should have a similar setup in the /home/pi/Booster folder.
 
 # Note about the JVM
-This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
+This project currently does not contain a JVM.  It is necessary to add one before running the vision system.  We recommend using the Bellsoft JRE 13.  It should be placed so that the java executable is at /home/pi/AluminatiVision/jre/bin/java.
 
 Download the JRE for the Raspberry Pi from this link: https://download.bell-sw.com/java/13.0.1/bellsoft-jre13.0.1-linux-arm32-vfp-hflt.tar.gz
 
