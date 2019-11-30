@@ -21,6 +21,10 @@ Remember to modify the file permissions of the scripts to make them executable.
 
 Original image from GRIP
 
+![example-2014](https://github.com/FRCAluminati3555/aluminati-vision/raw/master/images/example-2014.png)
+
+Original image from WPILib documentation
+
 # Features
  - Highly customizable
  - Fast custom pipelines
