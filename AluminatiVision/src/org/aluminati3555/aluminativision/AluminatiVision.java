@@ -83,6 +83,7 @@ public class AluminatiVision {
 		server0.setName("MJPEG-Server-0");
 		server0.setPriority(Thread.MIN_PRIORITY);
 		server0.start();
+
 		System.out.println("MJPEG servers started");
 	}
 
