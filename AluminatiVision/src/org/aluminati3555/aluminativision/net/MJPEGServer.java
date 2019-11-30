@@ -30,6 +30,7 @@ import java.text.DecimalFormat;
 import java.util.Vector;
 import java.util.concurrent.CompletableFuture;
 
+import org.aluminati3555.aluminativision.CameraResolution;
 import org.aluminati3555.aluminativision.util.VisionUtil;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -46,10 +47,7 @@ import org.opencv.imgproc.Imgproc;
  */
 public class MJPEGServer extends Thread {
 	private static final String SERVER_NAME = "MJPEGServer";
-	private static final int IMAGE_COMPRESSION = 50;
-
-	private static final int STREAMING_WIDTH = 160;
-	private static final int STREAMING_HEIGHT = 120;
+	private static final int STREAM_COMPRESSION = 50;
 
 	/**
 	 * Compresses an image
@@ -58,7 +56,7 @@ public class MJPEGServer extends Thread {
 	 */
 	private static void compress(Mat mat) {
 		MatOfByte matOfByte = new MatOfByte();
-		MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_JPEG_QUALITY, IMAGE_COMPRESSION);
+		MatOfInt params = new MatOfInt(Imgcodecs.IMWRITE_JPEG_QUALITY, STREAM_COMPRESSION);
 		Imgcodecs.imencode(".jpg", mat, matOfByte, params);
 		params.release();
 
@@ -83,6 +81,7 @@ public class MJPEGServer extends Thread {
 		return buffer;
 	}
 
+	private CameraResolution resolution;
 	private ServerSocket serverSocket;
 	private Vector<ClientHandler> clients;
 	private DecimalFormat decimalFormat;
@@ -121,7 +120,7 @@ public class MJPEGServer extends Thread {
 		frame.copyTo(workingFrame);
 
 		CompletableFuture.runAsync(() -> {
-			VisionUtil.resize(workingFrame, STREAMING_WIDTH, STREAMING_HEIGHT);
+			VisionUtil.resize(workingFrame, resolution.width, resolution.height);
 
 			double outputFPS = Double.parseDouble(decimalFormat.format(fps));
 			Imgproc.putText(workingFrame, outputFPS + " FPS", new Point(5, 10), 0, 0.25, new Scalar(0, 255, 0));
@@ -151,7 +150,8 @@ public class MJPEGServer extends Thread {
 		});
 	}
 
-	public MJPEGServer(int port) throws IOException {
+	public MJPEGServer(CameraResolution resolution, int port) throws IOException {
+		this.resolution = resolution;
 		serverSocket = new ServerSocket(port);
 		clients = new Vector<ClientHandler>();
 		decimalFormat = new DecimalFormat("###.#");
@@ -159,7 +159,8 @@ public class MJPEGServer extends Thread {
 		skip = false;
 	}
 
-	public MJPEGServer(int port, int cameraFPS, int streamFPS) throws IOException {
+	public MJPEGServer(CameraResolution resolution, int port, int cameraFPS, int streamFPS) throws IOException {
+		this.resolution = resolution;
 		serverSocket = new ServerSocket(port);
 		clients = new Vector<ClientHandler>();
 		decimalFormat = new DecimalFormat("###.#");

@@ -43,6 +43,9 @@ public class AluminatiVision {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 
+	private static final CameraResolution CAMERA0_RESOLUTION = new CameraResolution(320, 240);
+	private static final CameraResolution STREAM0_RESOLUTION = new CameraResolution(160, 120);
+
 	private static final int CAMERA0_FPS = 30;
 	private static final int STREAM0_FPS = 15;
 
@@ -71,7 +74,7 @@ public class AluminatiVision {
 
 	private static void startMJPEGServers() {
 		try {
-			server0 = new MJPEGServer(5800, CAMERA0_FPS, STREAM0_FPS);
+			server0 = new MJPEGServer(STREAM0_RESOLUTION, 5800, CAMERA0_FPS, STREAM0_FPS);
 		} catch (IOException e) {
 			System.err.println("Error: Unable to start MJPEG server");
 			System.exit(-1);
@@ -90,10 +93,10 @@ public class AluminatiVision {
 			System.exit(-1);
 		}
 
-		configCamera(0, 320, 240, CAMERA0_FPS, 5, -64, 6500);
+		configCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 5, -64, 6500);
 
-		camera0.set(Videoio.CAP_PROP_FRAME_WIDTH, 320);
-		camera0.set(Videoio.CAP_PROP_FRAME_HEIGHT, 240);
+		camera0.set(Videoio.CAP_PROP_FRAME_WIDTH, CAMERA0_RESOLUTION.width);
+		camera0.set(Videoio.CAP_PROP_FRAME_HEIGHT, CAMERA0_RESOLUTION.height);
 		camera0.set(Videoio.CAP_PROP_FPS, CAMERA0_FPS);
 
 		PipelineConfig config0 = new PipelineConfig();
