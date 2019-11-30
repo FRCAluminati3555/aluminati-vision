@@ -87,6 +87,10 @@ public class MJPEGServer extends Thread {
 	private Vector<ClientHandler> clients;
 	private DecimalFormat decimalFormat;
 
+	private boolean skip;
+	private int interval;
+	private long counter;
+
 	@Override
 	public void run() {
 		while (true) {
@@ -109,6 +113,10 @@ public class MJPEGServer extends Thread {
 	 * @param frame
 	 */
 	public synchronized void sendFrame(Mat frame, double fps) {
+		if (skip && counter++ % interval != 0) {
+			return;
+		}
+		
 		Mat workingFrame = new Mat();
 		frame.copyTo(workingFrame);
 
@@ -147,6 +155,18 @@ public class MJPEGServer extends Thread {
 		serverSocket = new ServerSocket(port);
 		clients = new Vector<ClientHandler>();
 		decimalFormat = new DecimalFormat("###.#");
+
+		skip = false;
+	}
+
+	public MJPEGServer(int port, int cameraFPS, int streamFPS) throws IOException {
+		serverSocket = new ServerSocket(port);
+		clients = new Vector<ClientHandler>();
+		decimalFormat = new DecimalFormat("###.#");
+
+		skip = true;
+		interval = cameraFPS / streamFPS;
+		counter = 0l;
 	}
 
 	private class ClientHandler {
