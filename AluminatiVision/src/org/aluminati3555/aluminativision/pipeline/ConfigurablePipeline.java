@@ -46,7 +46,7 @@ import org.opencv.imgproc.Imgproc;
 public class ConfigurablePipeline implements IVisionPipeline {
 	private static final Scalar GREEN = new Scalar(0, 255, 0);
 
-	private static final double DILATE_SIZE = 1.6;
+	private static final double DILATE_SIZE = 1.5;
 	private static final Mat DILATE_ELEMENT = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,
 			new Size(2 * DILATE_SIZE + 1, 2 * DILATE_SIZE + 1), new Point(DILATE_SIZE, DILATE_SIZE));
 
