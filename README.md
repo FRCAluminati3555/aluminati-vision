@@ -48,7 +48,14 @@ Original image from WPILib documentation
 The default AluminatiVision has an untuned HSV threshold and contour filters and attempts to track one target and send the target info to 10.35.55.2.
 
 # Cameras
-Any USB camera that supports V4L2 and a 320x240 resolution should work with AluminatiVision.  Currently only 30 FPS cameras have been tested due to hardware availability.  However, the software is fast enough that it should be able to support at least 90 FPS.
+Any USB camera that supports V4L2 and a 320x240 resolution should work with AluminatiVision.  Currently, the highest tested FPS is 187.
+
+Supported cameras:
+```
+PS3 Eye Camera (187 FPS, The maximum FPS is 187 not 120 as it says in the documentation)
+Microsoft Lifecam HD-3000 (30 FPS)
+```
+The default program is setup for the PS3 camera, but it can easily be changed to work with the Microsoft Lifecam.
  
 # Remote tuning
 AluminatiVision supports tuning via the util application over UDP.  This allows the HSV and contour filter values to be found quickly and accurately while calibrating on the field.  Note that you will need to the MJPEG stream in a web browser for tuning and that the values will need to be copied into the vision program itself (in AluminatiVision.java).  A binary of this tool will be included with releases.  You will need to use a JRE with JavaFX modules, such as Bellsoft's Java 13 JRE.
