@@ -112,12 +112,12 @@ public class MJPEGServer extends Thread {
 	 * @param frame
 	 */
 	public synchronized void sendFrame(Mat frame, double fps) {
+		Mat workingFrame = new Mat();
+		frame.copyTo(workingFrame);
+		
 		if (skip && counter++ % interval != 0) {
 			return;
 		}
-		
-		Mat workingFrame = new Mat();
-		frame.copyTo(workingFrame);
 
 		CompletableFuture.runAsync(() -> {
 			VisionUtil.resize(workingFrame, resolution.width, resolution.height);
