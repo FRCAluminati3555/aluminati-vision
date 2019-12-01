@@ -46,7 +46,7 @@ public class AluminatiVision {
 	private static final CameraResolution CAMERA0_RESOLUTION = new CameraResolution(320, 240);
 	private static final CameraResolution STREAM0_RESOLUTION = new CameraResolution(160, 120);
 
-	private static final int CAMERA0_FPS = 30;
+	private static final int CAMERA0_FPS = 187;
 	private static final int STREAM0_FPS = 15;
 
 	private static MJPEGServer server0;
@@ -54,7 +54,7 @@ public class AluminatiVision {
 	private static VisionLoop loop0;
 	private static ConfigListener listener0;
 
-	public static void configCamera(int camera, int frameWidth, int frameHeight, int fps, int exposure, int brightness,
+	public static void configMicrosoftCamera(int camera, int frameWidth, int frameHeight, int fps, int exposure, int brightness,
 			int whiteBalanceTemperature) {
 		try {
 			Runtime.getRuntime().exec("v4l2-ctl -d " + camera + " --set-fmt-video=width=" + frameWidth + ",height="
@@ -64,7 +64,19 @@ public class AluminatiVision {
 							+ ",brightness=" + brightness
 							+ ",white_balance_temperature_auto=0,white_balance_temperature=" + whiteBalanceTemperature);
 		} catch (IOException e) {
-			System.err.println("Error: Unable to run shell command to update settings for camera0");
+			System.err.println("Error: Unable to run shell command to update settings for camera");
+		}
+	}
+	
+	public static void configPS3Camera(int camera, int frameWidth, int frameHeight, int fps, int exposure, int brightness) {
+		try {
+			Runtime.getRuntime().exec("v4l2-ctl -d " + camera + " --set-fmt-video=width=" + frameWidth + ",height="
+					+ frameHeight + ",pixelformat=0 --set-parm=" + fps);
+			Runtime.getRuntime()
+					.exec("v4l2-ctl -d " + camera + " --set-ctrl=auto_exposure=1,exposure=" + exposure
+							+ ",brightness=" + brightness + ",white_balance_automatic=0");
+		} catch (IOException e) {
+			System.err.println("Error: Unable to run shell command to update settings for camera");
 		}
 	}
 
@@ -94,7 +106,8 @@ public class AluminatiVision {
 			System.exit(-1);
 		}
 
-		configCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 5, -64, 6500);
+		// configMicrosoftCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 5, -64, 6500);
+		configPS3Camera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 2, 0);
 
 		camera0.set(Videoio.CAP_PROP_FRAME_WIDTH, CAMERA0_RESOLUTION.width);
 		camera0.set(Videoio.CAP_PROP_FRAME_HEIGHT, CAMERA0_RESOLUTION.height);

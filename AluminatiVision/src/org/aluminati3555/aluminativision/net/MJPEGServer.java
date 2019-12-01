@@ -48,6 +48,8 @@ import org.opencv.imgproc.Imgproc;
 public class MJPEGServer extends Thread {
 	private static final String SERVER_NAME = "MJPEGServer";
 	private static final int STREAM_COMPRESSION = 50;
+	
+	private static final Scalar GREEN = new Scalar(0, 255, 0);
 
 	/**
 	 * Compresses an image
@@ -116,6 +118,7 @@ public class MJPEGServer extends Thread {
 		frame.copyTo(workingFrame);
 		
 		if (skip && counter++ % interval != 0) {
+			workingFrame.release();
 			return;
 		}
 
@@ -123,16 +126,16 @@ public class MJPEGServer extends Thread {
 			VisionUtil.resize(workingFrame, resolution.width, resolution.height);
 
 			double outputFPS = Double.parseDouble(decimalFormat.format(fps));
-			Imgproc.putText(workingFrame, outputFPS + " FPS", new Point(5, 10), 0, 0.25, new Scalar(0, 255, 0));
+			Imgproc.putText(workingFrame, outputFPS + " FPS", new Point(5, 10), 0, 0.25, GREEN);
 
 			// See this link for crosshair
 			// https://answers.opencv.org/question/22960/how-to-draw-crosshairsmarked-axes/
 
 			Imgproc.line(workingFrame, new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 - 8),
-					new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 + 8), new Scalar(0, 255, 0), 2);
+					new Point(workingFrame.width() / 2.0, workingFrame.height() / 2.0 + 8), GREEN, 2);
 
 			Imgproc.line(workingFrame, new Point(workingFrame.width() / 2.0 - 8, workingFrame.height() / 2.0),
-					new Point(workingFrame.width() / 2.0 + 8, workingFrame.height() / 2.0), new Scalar(0, 255, 0), 2);
+					new Point(workingFrame.width() / 2.0 + 8, workingFrame.height() / 2.0), GREEN, 2);
 
 			compress(workingFrame);
 
