@@ -122,7 +122,6 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 ```
 chmod +x *.sh
 ./install-deps.sh
-./disable-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
 ```
