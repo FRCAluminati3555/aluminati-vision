@@ -160,7 +160,7 @@ sudo make install
 7. Navigate back to the scripts directory, and continue with the steps in the setup instructions.
 
 # Disabling wifi and bluetooth
-FRC requires that all wireless communcation be disabled on the Raspberry Pi to use it in competition.  Add these lines to /boot/config.txt to disable both wifi and bluetooth.
+FRC requires that all wireless communcation be disabled on the Raspberry Pi to use it in competition.  Add these lines to /boot/config.txt before the line [pi4] to disable both wifi and bluetooth.
 ```
 dtoverlay=disable-wifi
 dtoverlay=disable-bt
