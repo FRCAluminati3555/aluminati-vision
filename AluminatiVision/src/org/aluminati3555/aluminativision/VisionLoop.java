@@ -108,7 +108,7 @@ public class VisionLoop extends Thread {
 			try {
 				visionOutputHandler.update(output);
 			} catch (IOException e) {
-				System.err.println("Error: Unable to send vision data to robot");
+				
 			}
 
 			server.sendFrame(outputFrame, currentFPS);

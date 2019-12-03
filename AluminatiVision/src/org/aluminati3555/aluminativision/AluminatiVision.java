@@ -54,8 +54,8 @@ public class AluminatiVision {
 	private static VisionLoop loop0;
 	private static ConfigListener listener0;
 
-	public static void configMicrosoftCamera(int camera, int frameWidth, int frameHeight, int fps, int exposure, int brightness,
-			int whiteBalanceTemperature) {
+	public static void configMicrosoftCamera(int camera, int frameWidth, int frameHeight, int fps, int exposure,
+			int brightness, int whiteBalanceTemperature) {
 		try {
 			Runtime.getRuntime().exec("v4l2-ctl -d " + camera + " --set-fmt-video=width=" + frameWidth + ",height="
 					+ frameHeight + ",pixelformat=0 --set-parm=" + fps);
@@ -67,14 +67,14 @@ public class AluminatiVision {
 			System.err.println("Error: Unable to run shell command to update settings for camera");
 		}
 	}
-	
-	public static void configPS3Camera(int camera, int frameWidth, int frameHeight, int fps, int exposure, int brightness) {
+
+	public static void configPS3Camera(int camera, int frameWidth, int frameHeight, int fps, int exposure,
+			int brightness) {
 		try {
 			Runtime.getRuntime().exec("v4l2-ctl -d " + camera + " --set-fmt-video=width=" + frameWidth + ",height="
 					+ frameHeight + ",pixelformat=0 --set-parm=" + fps);
-			Runtime.getRuntime()
-					.exec("v4l2-ctl -d " + camera + " --set-ctrl=auto_exposure=1,exposure=" + exposure
-							+ ",brightness=" + brightness + ",white_balance_automatic=0");
+			Runtime.getRuntime().exec("v4l2-ctl -d " + camera + " --set-ctrl=auto_exposure=1,exposure=" + exposure
+					+ ",brightness=" + brightness + ",white_balance_automatic=0");
 		} catch (IOException e) {
 			System.err.println("Error: Unable to run shell command to update settings for camera");
 		}
@@ -106,7 +106,8 @@ public class AluminatiVision {
 			System.exit(-1);
 		}
 
-		// configMicrosoftCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 5, -64, 6500);
+		// configMicrosoftCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height,
+		// CAMERA0_FPS, 5, -64, 6500);
 		configPS3Camera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 2, 0);
 
 		camera0.set(Videoio.CAP_PROP_FRAME_WIDTH, CAMERA0_RESOLUTION.width);
