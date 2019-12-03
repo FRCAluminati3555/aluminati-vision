@@ -1,6 +1,6 @@
 # AluminatiVision
 
-AluminatiVision is a template for vision processing: The AluminatiVision.java file can be customized by the user for a wide range of vision processing tasks.  It uses OpenCV 4 for fast image processing and has a system for making custom pipelines using a variety of parameters (HSV and contour filters).  The application is capable of hosting MJPEG servers for the cameras.  Multiple cameras can be used.  The pipelines are known to run very quickly on the Raspberry Pi 4 B+ (~2 ms).  AluminatiVision should work well with very little modification (such as setting IP addresses and adjusting HSV and contour filters).  More complicated modifications are required to add more cameras.
+AluminatiVision is a template for vision processing: The AluminatiVision.java file can be customized by the user for a wide range of vision processing tasks.  It uses OpenCV 4 for fast image processing and has a system for making custom pipelines using a variety of parameters (HSV and contour filters).  The application is capable of hosting MJPEG servers for the cameras.  Multiple cameras can be used.  The pipelines are known to run very quickly on the Raspberry Pi 4 B+ (~2-3 ms).  AluminatiVision should work well with very little modification (such as setting IP addresses and adjusting HSV and contour filters).  More complicated modifications are required to add more cameras.
 
 When all of the components are compiled/added to the source tree, the directory structure should look like this:
 ```
@@ -48,7 +48,14 @@ Original image from WPILib documentation
 The default AluminatiVision has an untuned HSV threshold and contour filters and attempts to track one target and send the target info to 10.35.55.2.
 
 # Cameras
-Any USB camera that supports V4L2 and a 320x240 resolution should work with AluminatiVision.  Currently only 30 FPS cameras have been tested due to hardware availability.  However, the software is fast enough that it should be able to support at least 90 FPS.
+Any USB camera that supports V4L2 and a 320x240 resolution should work with AluminatiVision.  Currently, the highest tested FPS is 187.
+
+Supported cameras:
+```
+PS3 Eye Camera (187 FPS, The maximum FPS is 187 not 120 as it says in the documentation)
+Microsoft Lifecam HD-3000 (30 FPS)
+```
+The default program is setup for the PS3 camera, but it can easily be changed to work with the Microsoft Lifecam.
  
 # Remote tuning
 AluminatiVision supports tuning via the util application over UDP.  This allows the HSV and contour filter values to be found quickly and accurately while calibrating on the field.  Note that you will need to the MJPEG stream in a web browser for tuning and that the values will need to be copied into the vision program itself (in AluminatiVision.java).  A binary of this tool will be included with releases.  You will need to use a JRE with JavaFX modules, such as Bellsoft's Java 13 JRE.
@@ -115,7 +122,6 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 ```
 chmod +x *.sh
 ./install-deps.sh
-./disable-services.sh
 ./install-vision-service.sh
 ./install-booster-service.sh
 ```
@@ -153,7 +159,7 @@ sudo make install
 7. Navigate back to the scripts directory, and continue with the steps in the setup instructions.
 
 # Disabling wifi and bluetooth
-FRC requires that all wireless communcation be disabled on the Raspberry Pi to use it in competition.  Add these lines to /boot/config.txt to disable both wifi and bluetooth.
+FRC requires that all wireless communcation be disabled on the Raspberry Pi to use it in competition.  Add these lines to /boot/config.txt before the line [pi4] to disable both wifi and bluetooth.
 ```
 dtoverlay=disable-wifi
 dtoverlay=disable-bt
