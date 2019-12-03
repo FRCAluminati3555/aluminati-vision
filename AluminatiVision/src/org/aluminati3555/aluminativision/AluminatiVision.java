@@ -34,6 +34,7 @@ import org.aluminati3555.aluminativision.pipeline.ConfigurablePipeline;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig.PipelineMode;
 import org.aluminati3555.aluminativision.pipeline.PipelineConfig.TargetMode;
+import org.aluminati3555.aluminativision.util.VisionUtil;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
@@ -80,6 +81,12 @@ public class AluminatiVision {
 		}
 	}
 
+	private static void updateCamera0V4L2() {
+		// configMicrosoftCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height,
+		// CAMERA0_FPS, 5, -64, 6500);
+		configPS3Camera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 2, 0);
+	}
+
 	private static void printBanner() {
 		System.out.println("AluminatiVision\nCopyright (c) 2019 Team 3555\n");
 	}
@@ -106,9 +113,7 @@ public class AluminatiVision {
 			System.exit(-1);
 		}
 
-		// configMicrosoftCamera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height,
-		// CAMERA0_FPS, 5, -64, 6500);
-		configPS3Camera(0, CAMERA0_RESOLUTION.width, CAMERA0_RESOLUTION.height, CAMERA0_FPS, 2, 0);
+		updateCamera0V4L2();
 
 		camera0.set(Videoio.CAP_PROP_FRAME_WIDTH, CAMERA0_RESOLUTION.width);
 		camera0.set(Videoio.CAP_PROP_FRAME_HEIGHT, CAMERA0_RESOLUTION.height);
@@ -158,5 +163,15 @@ public class AluminatiVision {
 		startCameras();
 
 		System.out.println("Initialization complete");
+
+		// Update the camera settings in case V4L2 was not fully initialized when the
+		// program started
+		while (true) {
+			// It is ok to use a simple delay here since the actual timing is not all that
+			// important
+
+			updateCamera0V4L2();
+			VisionUtil.sleep(1);
+		}
 	}
 }
