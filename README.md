@@ -9,10 +9,6 @@ AluminatiVision
               |-jre
               |-AluminatiVision.sh
               |-AluminatiVision.jar
-              
-Booster
-      |-Booster
-      |-Booster.sh
 ```
 
 Remember to modify the file permissions of the scripts to make them executable.
