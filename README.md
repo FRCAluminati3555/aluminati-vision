@@ -100,7 +100,7 @@ Running at an FPS lower than 187 may cause the pipeline latency to increase beca
 # Setup steps (using premade image)
 1. Flash premade image to an SD card.
 2. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
-3. Using the hostname AluminatiVision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
+3. Using the hostname aluminativision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
 4. Set the filesystem to read-write.
 5. Upload your custom vision program based on the the code in /home/pi/AluminatiVision/src to /home/pi/AluminatiVision/AluminatiVision.jar.
 6. Set the filesystem to read-only, and reboot.
