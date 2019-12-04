@@ -98,8 +98,8 @@ Example:
 mjpg:http://AluminatiVision:5800
 ```
 
-# Booster
-The Raspberry Pi has a highly variable clock speed.  This program helps keep the clock speed high to ensure low-latency target info.
+# Running at lower FPS
+Running at an FPS lower than 187 may cause the pipeline latency to increase because the Rasperry Pi will lower its CPU frequency.
 
 # Setup steps (using premade image)
 1. Flash premade image to an SD card.
@@ -123,20 +123,9 @@ The Raspberry Pi has a highly variable clock speed.  This program helps keep the
 chmod +x *.sh
 ./install-deps.sh
 ./install-vision-service.sh
-./install-booster-service.sh
-```
-
-10. Run
-```
-cd ../Booster/src
-make
-make install
-cd ../../scripts
 sudo ./read-only-fs.sh
 ```
-This will copy the Booster program to /home/pi/Booster/Booster and make the filesystem read-only. Be sure to select no for all options in the read-only-fs script.
-
-11. Reboot
+10. Reboot
 
 # Library
 The lib/src directory contains Java code for communicating with AluminatiVision from the robot code.  The code is simple and should be able to be replicated in other languages (C++) with little difficulty.
