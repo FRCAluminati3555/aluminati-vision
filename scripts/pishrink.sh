@@ -235,7 +235,7 @@ rm -f /etc/rc.local; cp -f /etc/rc.local.bak /etc/rc.local; /etc/rc.local
 exit 0
 EOF1
     #####End no touch zone#####
-    chmod +x "$mountdir/etc/rc.local"
+    chmod -x "$mountdir/etc/rc.local"
   fi
   umount "$mountdir"
 else
