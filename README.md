@@ -112,14 +112,14 @@ Running at an FPS lower than 187 may cause the pipeline latency to increase beca
 4. Connect the Raspberry Pi to your computer with ethernet (bridged to Internet), and boot from the SD card.
 5. Using the hostname raspberrypi.local, log in with SSH and SCP (username: pi, password: raspberry).
 6. Upload the repository to the home directory so that the root of this project is located at /home/pi.
-7. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
+7. Upload a Java 13 JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
 8. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
-9. Navigate to /home/pi/scripts and the the following commands:
+9. Navigate to /home/pi/scripts, and run the following commands:
 ```
 chmod +x *.sh
 ./install-deps.sh
 ./install-vision-service.sh
-chmod -x /etc/rc.local
+sudo chmod -x /etc/rc.local
 sudo ./read-only-fs.sh
 ```
 10. Reboot
