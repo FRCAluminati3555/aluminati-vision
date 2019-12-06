@@ -9,10 +9,6 @@ AluminatiVision
               |-jre
               |-AluminatiVision.sh
               |-AluminatiVision.jar
-              
-Booster
-      |-Booster
-      |-Booster.sh
 ```
 
 Remember to modify the file permissions of the scripts to make them executable.
@@ -104,7 +100,7 @@ Running at an FPS lower than 187 may cause the pipeline latency to increase beca
 # Setup steps (using premade image)
 1. Flash premade image to an SD card.
 2. Connect the Raspberry Pi to your computer with ethernet, and boot from the SD card.
-3. Using the hostname AluminatiVision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
+3. Using the hostname aluminativision.local, log in with SSH and SCP (username: pi, password: AluminatiVision).
 4. Set the filesystem to read-write.
 5. Upload your custom vision program based on the the code in /home/pi/AluminatiVision/src to /home/pi/AluminatiVision/AluminatiVision.jar.
 6. Set the filesystem to read-only, and reboot.
@@ -112,17 +108,18 @@ Running at an FPS lower than 187 may cause the pipeline latency to increase beca
 # Setup steps (from scratch)
 1. Flash Raspbian Buster to an SD card.
 2. Add empty SSH file to "boot" partition.
-3. Connect the Raspberry Pi to your computer with ethernet (bridged to Internet), and boot from the SD card.
-4. Using the hostname raspberrypi.local, log in with SSH and SCP (username: pi, password: raspberry).
-5. Upload the repository to the home directory so that the root of this project is located at /home/pi.
-6. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
-7. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
-8. Disable wifi and bluetooth (see other section).
+3. Disable wifi and bluetooth (see other section).
+4. Connect the Raspberry Pi to your computer with ethernet (bridged to Internet), and boot from the SD card.
+5. Using the hostname raspberrypi.local, log in with SSH and SCP (username: pi, password: raspberry).
+6. Upload the repository to the home directory so that the root of this project is located at /home/pi.
+7. Upload a JRE (Bellsoft JRE recommended) to /home/pi/AluminatiVision/jre.
+8. Upload your custom vision program to /home/pi/AluminatiVision/AluminatiVision.jar
 9. Navigate to /home/pi/scripts and the the following commands:
 ```
 chmod +x *.sh
 ./install-deps.sh
 ./install-vision-service.sh
+chmod -x /etc/rc.local
 sudo ./read-only-fs.sh
 ```
 10. Reboot
