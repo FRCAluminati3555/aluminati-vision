@@ -119,6 +119,7 @@ Running at an FPS lower than 187 may cause the pipeline latency to increase beca
 chmod +x *.sh
 ./install-deps.sh
 ./install-vision-service.sh
+chmod -x /etc/rc.local
 sudo ./read-only-fs.sh
 ```
 10. Reboot
