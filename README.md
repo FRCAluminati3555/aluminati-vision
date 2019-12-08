@@ -91,7 +91,7 @@ Since AluminatiVision does not contain the WPILib libraries, the mjpeg stream wi
 mjpg:http://<ip_or_hostname_of_vision_system>:<port>
 
 Example:
-mjpg:http://AluminatiVision:5800
+mjpg:http://aluminativision:5800
 ```
 
 # Running at lower FPS
